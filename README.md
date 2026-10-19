@@ -173,3 +173,4 @@ no scroll reveals or tilt, and the hero shows its poster instead of the video.
 - **Email and social links** (not in the PDF): confirmed values live in `src/content/channels.ts`.
 - **Prices:** none are shown; the site only offers "Request a Quote".
 - **Interface strings not in `verified-copy.md`** (menu, close, skip link, "Page not found") — approved placeholders in `en.ts` / `ar.ts`.
+
