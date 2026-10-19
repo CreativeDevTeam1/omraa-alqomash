@@ -1,0 +1,646 @@
+<title>Omraa Loader Concepts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --ivory:#EAE6DF; --paper:#F4F1EB; --ink:#361F17; --olive:#434B38; --terra:#9E472A;
+  --beige:#B8A38D; --navy:#1B2A3B; --charcoal:#2D2F2D; --muted:#6E5E54; --line:rgba(54,31,23,.16);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:'Amiri','Traditional Arabic',serif;font-size:18px;line-height:1.7}
+.lat{font-family:'Cormorant Garamond','Garamond','Times New Roman',serif}
+.wrap{max-width:1180px;margin:0 auto;padding-block:48px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 40px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+header.top h1{margin:0;font-weight:700;font-size:clamp(30px,4vw,44px);line-height:1.25;text-wrap:balance}
+header.top p{margin:6px 0 0;max-width:60ch;color:var(--muted)}
+header.top img{height:56px;width:auto}
+
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:32px;border:1px solid var(--line)}
+.tab{appearance:none;background:transparent;border:0;border-inline-start:1px solid var(--line);padding:18px 20px;text-align:start;font:inherit;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;gap:2px;min-width:0;transition:background .3s,color .3s}
+.tab:nth-child(3n+1){border-inline-start:0}
+.tab:nth-child(n+4){border-top:1px solid var(--line)}
+.tab .new{font-style:normal;font-size:12px;font-weight:400;color:var(--terra);border:1px solid currentColor;padding:0 6px;margin-inline-start:6px;vertical-align:middle}
+.tab[aria-selected="true"] .new{color:#E2A58C}
+.tab .n{font-family:'Cormorant Garamond',serif;font-size:28px;line-height:1;color:var(--beige)}
+.tab .t{font-size:20px;font-weight:700;color:inherit}
+.tab .s{font-size:15px;line-height:1.5}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--ivory)}
+.tab[aria-selected="true"] .n{color:var(--terra)}
+.tab:focus-visible{outline:2px solid var(--terra);outline-offset:-4px}
+
+.stage-wrap{margin-top:20px}
+.stage{position:relative;width:100%;max-width:100%;aspect-ratio:16/10;overflow:hidden;background:var(--ivory);container-type:inline-size;border:1px solid var(--line)}
+@media (max-width:640px){.stage{aspect-ratio:3/4}}
+
+/* ---------- Hero (what the loader reveals) ---------- */
+.hero{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--ivory);color:var(--ink);direction:ltr}
+.hero-bar{display:flex;align-items:center;justify-content:space-between;gap:2cqw;padding:1.6cqw 4cqw;border-bottom:1px solid var(--line)}
+.hero-bar img{height:max(26px,4.2cqw);width:auto}
+.hero-bar nav{display:flex;gap:2.6cqw;font-family:'Cormorant Garamond',serif;font-size:max(11px,1.35cqw)}
+.hero-bar nav span:last-child{color:var(--olive);font-family:'Amiri',serif}
+.hero-body{position:relative;flex:1;min-height:0;overflow:hidden;background:#141110}
+.hero-body video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,14,11,.78) 0%,rgba(20,14,11,.35) 34%,rgba(20,14,11,0) 60%)}
+.hero-copy{position:absolute;left:0;right:0;top:50%;transform:translateY(-30%);text-align:center;padding:0 4cqw}
+.hero-copy h2{margin:0;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:max(15px,2.5cqw);line-height:1.35;color:#EAE6DF;text-shadow:0 1px 24px rgba(0,0,0,.35)}
+@media (max-width:640px){.hero-bar nav span:not(:last-child){display:none}.hero-copy h2{font-size:4.6cqw}}
+
+/* ---------- Loader layer ---------- */
+.layer{position:absolute;inset:0;pointer-events:none}
+.fill{position:absolute;inset:0;background:var(--ivory)}
+.center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.2cqw}
+.counter{position:absolute;inset-inline-end:3.4cqw;bottom:2.6cqw;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:max(28px,6.4cqw);line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;direction:ltr}
+.counter small{font-size:.4em;color:var(--terra);margin-left:.2em;vertical-align:top}
+.tagline{font-family:'Amiri',serif;font-size:max(14px,1.9cqw);color:var(--olive);direction:rtl}
+.wordmark{font-family:'Cormorant Garamond',serif;letter-spacing:.32em;font-size:max(10px,1.05cqw);color:var(--muted);direction:ltr}
+
+/* Concept 1: Loom */
+.emblem{width:max(70px,11cqw);height:auto;overflow:visible}
+.emblem path{transform-box:fill-box;transform-origin:center}
+.loom-logo{height:max(54px,10cqw);width:auto}
+.bar{position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(54,31,23,.08)}
+.bar i{display:block;height:100%;width:100%;background:var(--terra);transform-origin:left;transform:scaleX(0)}
+.curtain{position:absolute;left:0;right:0;height:50.5%;background:var(--ivory)}
+.curtain.t{top:0} .curtain.b{bottom:0}
+
+/* Concept 2: Monolith diamond */
+.diamond{position:absolute;left:50%;top:50%;width:max(150px,24cqw);aspect-ratio:1;transform:translate(-50%,-50%);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);overflow:hidden;background:var(--beige)}
+.diamond img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.diamond img.on{opacity:1}
+.mono-logo{position:absolute;left:50%;top:3.2cqw;transform:translateX(-50%);height:max(30px,5cqw);width:auto}
+.mono-tag{position:absolute;left:0;right:0;bottom:3cqw;text-align:center}
+.reveal{position:absolute;inset:0;overflow:hidden}
+.reveal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* Concept 3: Thread */
+.thread{position:absolute;left:0;top:50%;width:100%;height:24cqw;transform:translateY(-50%);overflow:visible}
+.thread .main{fill:none;stroke:var(--terra);stroke-width:1.6;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.thread .stitch{fill:none;stroke:var(--olive);stroke-width:1.2;vector-effect:non-scaling-stroke;stroke-dasharray:6 7}
+.needle{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--terra);box-shadow:0 0 0 5px rgba(158,71,42,.15)}
+.thread-logo{height:max(56px,11cqw);width:auto;background:var(--ivory);padding:0 2.4cqw;position:relative}
+.cols{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr)}
+.cols span{background:var(--ivory);display:block}
+.cols span+span{box-shadow:inset 1px 0 0 rgba(54,31,23,.07)}
+
+/* Concept 4: Weave */
+.weave{position:absolute;inset:0;width:100%;height:100%}
+.plate{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--ivory);padding:2.4cqw 3.6cqw 2cqw;display:flex;flex-direction:column;align-items:center;gap:1cqw;box-shadow:0 0 0 1px rgba(54,31,23,.08)}
+.plate img{height:max(50px,9cqw);width:auto}
+
+/* Concept 5: Swatch fan */
+.fan{position:absolute;left:50%;bottom:9cqw;width:0;height:0}
+.card{position:absolute;left:0;bottom:0;width:max(120px,17cqw);aspect-ratio:3/5;margin-left:calc(max(120px,17cqw)/-2);transform-origin:50% 92%;background:var(--paper);padding:.7cqw .7cqw 2.6cqw;box-shadow:0 1.2cqw 2.4cqw rgba(54,31,23,.16),0 0 0 1px rgba(54,31,23,.06)}
+.card .ph{position:relative;width:100%;height:100%;overflow:hidden}
+.card .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card svg{position:absolute;left:50%;bottom:.8cqw;width:1.4cqw;min-width:10px;transform:translateX(-50%)}
+.pin{position:absolute;left:50%;bottom:calc(9cqw + max(120px,17cqw)*5/3*.08);width:1.1cqw;min-width:8px;aspect-ratio:1;border-radius:50%;background:var(--ink);transform:translate(-50%,50%);box-shadow:0 0 0 .35cqw var(--ivory)}
+.fan-logo{position:absolute;left:50%;top:4cqw;transform:translateX(-50%);height:max(40px,7cqw);width:auto}
+.zoomer{position:absolute;overflow:hidden}
+.zoomer img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* Concept 6: Roll */
+.sheet{position:absolute;inset:0;background:var(--ivory)}
+.selvedge{position:absolute;inset:2.2cqw;border:1px dashed rgba(67,75,56,.45)}
+.roll{position:absolute;top:0;bottom:0;left:0;width:3cqw;transform:translateX(-100%);border-radius:0;
+  background:linear-gradient(90deg,#CFC6B8 0%,#F4F0E9 30%,#E2DBD0 55%,#B8AC9A 85%,#9C8F7C 100%);
+  box-shadow:1.4cqw 0 2.4cqw rgba(54,31,23,.28)}
+.roll::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 .5cqw,rgba(54,31,23,.06) .5cqw calc(.5cqw + 1px))}
+
+/* Controls below */
+.below{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px 48px;margin-top:24px}
+.below h2{margin:0 0 6px;font-size:26px;line-height:1.3}
+.below p{margin:0 0 12px;max-width:62ch}
+.meta{display:flex;flex-direction:column;gap:14px;border-inline-start:1px solid var(--line);padding-inline-start:28px}
+.meta dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:16px}
+.meta dt{color:var(--muted)}
+.meta dd{margin:0}
+.controls{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.btn-ui{appearance:none;font:inherit;font-size:17px;font-weight:700;border:1px solid var(--ink);background:var(--ink);color:var(--ivory);padding:8px 22px;cursor:pointer;min-height:44px}
+.btn-ui.ghost{background:transparent;color:var(--ink)}
+.btn-ui:focus-visible{outline:2px solid var(--terra);outline-offset:3px}
+.note{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:16px;max-width:80ch}
+.note b{color:var(--ink)}
+@media (max-width:760px){
+  .tabs{grid-template-columns:1fr 1fr}
+  .tab{border-inline-start:1px solid var(--line)!important;border-top:1px solid var(--line)!important;padding:14px}
+  .tab:nth-child(2n+1){border-inline-start:0!important}
+  .tab:nth-child(-n+2){border-top:0!important}
+  .tab .s{display:none}
+  .below{grid-template-columns:1fr}
+  .meta{border-inline-start:0;padding-inline-start:0;border-top:1px solid var(--line);padding-top:18px}
+}
+</style>
+
+<div class="wrap" dir="rtl" lang="ar">
+  <header class="top">
+    <div>
+      <h1>صفحة التحميل — ٩ أفكار</h1>
+      <p>كل فكرة شغالة بالحركة الحقيقية جوه إطار بحجم الشاشة، وبتكشف في الآخر الـ Hero بتاع السايت. اختاري فكرة من فوق، وتقدري تعيديها بزرار «إعادة».</p>
+    </div>
+    <img src="logo.svg" alt="شعار أمراء القماش">
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="أفكار صفحة التحميل">
+    <button class="tab" role="tab" aria-selected="false" data-c="7"><span class="n lat">08</span><span class="t">انتقال ناعم <em class="new">جديد</em></span><span class="s">الكاميرا بتدخل في القماش وتطلع على الـ Hero</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-c="8"><span class="n lat">09</span><span class="t">مسحة الحرير <em class="new">جديد</em></span><span class="s">القماش بينسحب واللوجو بيطير لمكانه</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-c="6"><span class="n lat">07</span><span class="t">الخيط + الفيديو <em class="new">جديد</em></span><span class="s">الفيديو الفاتح بيتشال لفوق بنعومة</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-c="0"><span class="n lat">01</span><span class="t">النَّول</span><span class="s">الرمز بيتنسج وعدسة بتتفتح على الـ Hero</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-c="1"><span class="n lat">02</span><span class="t">نافذة المعين</span><span class="s">المعيّن بيتحول هو نفسه للـ Hero</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-c="2"><span class="n lat">03</span><span class="t">الخيط</span><span class="s">الشاشة بتتفتح من الخيط زي عين</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-c="3"><span class="n lat">04</span><span class="t">النسيج <em class="new">جديد</em></span><span class="s">القماشة المنسوجة بتسيح في الـ Hero</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-c="4"><span class="n lat">05</span><span class="t">مروحة العينات <em class="new">جديد</em></span><span class="s">كارت العينة بيكبر ويبقى الـ Hero</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-c="5"><span class="n lat">06</span><span class="t">لفّة القماش <em class="new">جديد</em></span><span class="s">نور بيغرق القماشة ويطلع الـ Hero</span></button>
+  </div>
+
+  <div class="stage-wrap">
+    <div class="stage" id="stage" aria-label="معاينة صفحة التحميل">
+      <div class="hero" aria-hidden="true">
+        <div class="hero-bar">
+          <img src="logo.svg" alt="">
+          <nav><span>About Us</span><span>Vision &amp; Mission</span><span>Our Products</span><span>What We Manufacture</span><span>Contact Us</span><span>العربية</span></nav>
+        </div>
+        <div class="hero-body">
+          <video id="heroVid" src="hero-fabric.mp4" poster="hero-fabric-poster.jpg" muted loop playsinline autoplay></video>
+          <div class="hero-shade"></div>
+          <div class="hero-copy">
+            <h2 style="font-weight:300;font-size:max(26px,7cqw);letter-spacing:.05em;line-height:1;white-space:nowrap">OMRAA AL QOMASH</h2><div style="width:5cqw;height:1px;background:rgba(234,230,223,.6);margin:1.8cqw auto"></div><h2 style="font-size:max(11px,1.6cqw);letter-spacing:.04em;opacity:.85">Egyptian Upholstery &amp; Furnishing Fabric Manufacturer</h2>
+          </div>
+        </div>
+      </div>
+      <div class="layer" id="layer"></div>
+    </div>
+  </div>
+
+  <section class="below">
+    <div>
+      <h2 id="c-title"></h2>
+      <p id="c-desc"></p>
+      <p id="c-why" style="color:var(--muted)"></p>
+      <div class="controls">
+        <button class="btn-ui" id="replay">إعادة</button>
+        <button class="btn-ui ghost" id="slow" aria-pressed="false">بالبطيء</button>
+      </div>
+    </div>
+    <div class="meta">
+      <dl>
+        <dt>المدة</dt><dd id="c-dur"></dd>
+        <dt>العناصر</dt><dd id="c-els"></dd>
+        <dt>المرجع</dt><dd id="c-ref"></dd>
+        <dt>التنفيذ</dt><dd id="c-dev"></dd>
+      </dl>
+    </div>
+  </section>
+
+  <p class="note"><b>الكلام المستخدم:</b> مفيش أي نص متألف — اللوجو، والشعار «جودة تنسج المستقبل»، والاسم OMRAA AL QOMASH، والعنوان والسطر اللي في الـ Hero كلهم من الكونتنت والهوية. الألوان من دليل الهوية (عاجي، إسبريسو، زيتي، طوبي، بيج). الصور من الصور اللي بعتها الكلاينت.</p>
+</div>
+
+<script>
+(function(){
+  const EMBLEM = `<svg class="emblem" viewBox="238 264 106 98" aria-hidden="true">
+    <path data-o="5" fill="#95371F" d="M292.4 325.4 286.5 319.7 283.1 323 288.7 328.7 272.8 344.2 260.1 332.2 269.8 322.3 290.1 302.5 292.5 300.3 310.1 317.6 324.6 331.8 317.9 338.3 311.9 344.1 296.1 328.7 301.6 323.1 298.1 319.8Z"/>
+    <path data-o="6" fill="#453E1C" d="M292.7 332.1 307.4 346.9 292.3 361.8 277.6 347Z"/>
+    <path data-o="0" fill="#443E1C" d="M292.5 265.8 307.1 280.6 292.3 295.2 277.7 280.5Z"/>
+    <path data-o="2" fill="#453D1B" d="M328.5 299.8 342.6 314 328.1 328.4 314 314.2Z"/>
+    <path data-o="1" fill="#463E1B" d="M256.2 299.8 270.7 314.1 256.5 328.5 242 314.2Z"/>
+    <path data-o="3" fill="#96371F" d="M273.7 283.6 287.8 297.5 274.3 311.2 260.2 297.2Z"/>
+    <path data-o="4" fill="#96371F" d="M311.2 283.6 324.4 297.1 310.2 311 297 297.5Z"/>
+  </svg>`;
+  const IMGS = ['weave-macro.jpg','linen-drape.jpg','swatch-book.jpg','fabric-fan.jpg','fabric-rolls.jpg','swatch-fan.jpg','grey-sofa.jpg','still-life.jpg'];
+  // preload
+  IMGS.forEach(s=>{const i=new Image();i.src=s;});
+
+  const concepts = [
+    { title:'٠١ — النَّول',
+      desc:'رمز أمراء القماش (المعيّنات السبعة) بيتنسج قطعة قطعة، وبعدين يظهر اللوجو والاسم والعداد. الانتقال: اللوجو بيكبر ويختفي بنعومة، ومن نص اللوجو بالظبط بتتفتح دايرة ناعمة الحواف بتكبر لحد ما تملا الشاشة، زي عدسة كاميرا بتتفتح. والـ Hero بيظهر من جوه وهو قريب ومنوّر وبيستقر.',
+      why:'ده أقرب واحد لهوية البراند: الرمز نفسه معمول من وحدات منسوجة، والشعار بيتكلم عن النسج. هادي وفخم، ومش محتاج صور خالص فبيحمّل بسرعة.',
+      dur:'حوالي ٣٫٨ ثانية', els:'الرمز، اللوجو (بالشعار اللي فيه)، الاسم بالإنجليزي، عداد، خط تقدم', ref:'Aurasens (Awwwards) — عداد هادي مع لوجو', dev:'سهل — CSS أو GSAP بسيط، SVG للرمز', total:3800, run:loom },
+    { title:'٠٢ — نافذة المعين',
+      desc:'شكل معيّن في النص، وجواه صور الأقمشة بتتبدل والعداد شغال. الانتقال: آخر حاجة بتظهر جوه المعيّن هي فيديو الـ Hero نفسه، والمعيّن بيكبر لحد ما يملا الشاشة. فالمعيّن نفسه بيتحول للـ Hero من غير أي قطع.',
+      why:'بيعرض المنتج من أول ثانية — الزائر يشوف خامات وألوان قبل ما يقرا كلمة. الانتقال للـ Hero مستمر ومن غير قطع، وده اللي بيدّي إحساس السايتات الفايزة.',
+      dur:'حوالي ٣٫٦ ثانية', els:'اللوجو، ٨ صور من صور الكلاينت، عداد، الاسم بالإنجليزي', ref:'Monolith (Awwwards) — صور بتتبدل جوه شكل وبعدين تتوسع', dev:'متوسط — clip-path + GSAP، لازم الصور تكون مضغوطة', total:3600, run:monolith },
+    { title:'٠٣ — الخيط',
+      desc:'خيط طوبي بيترسم على عرض الشاشة ووراه الغرزة والإبرة، واللوجو بيظهر في النص. الانتقال: الشاشة بتتفتح بنعومة من عند الخيط لفوق ولتحت، بحواف مغبّشة زي عين بتفتح، والـ Hero بيظهر من الفتحة وهو بيستقر.',
+      why:'خفيف جدًا وفيه حركة واضحة. الخيط والغرزة بيربطوا السايت بالتنجيد والتفصيل، والشرائط في الآخر بتفكّر بأتواب القماش في المصنع.',
+      dur:'حوالي ٣٫٤ ثانية', els:'اللوجو، الاسم بالإنجليزي، خيط SVG، غرزة، ٥ شرائط', ref:'أسلوب «line draw + panels» المنتشر في Awwwards', dev:'سهل — SVG stroke-dashoffset', total:3400, run:thread },
+    { title:'٠٤ — النسيج',
+      desc:'خيوط السَّدى بتنزل من فوق، وخيوط اللُّحمة بتعدّي فوق خيط وتحت خيط لحد ما قطعة قماش تتنسج، واللوجو في النص. الانتقال: القماشة المنسوجة بتسيح، بتتغبّش وتكبر شوية وتختفي، والـ Hero بيطلع من نفس الغبشة ويوضح.',
+      why:'دي حرفيًا الشغلانة بتاعة المصنع: النسج على النول. الحركة بتحكي إن أمراء القماش «بيصنعوا» القماش مش بيبيعوه بس، وفي نفس الوقت بتكمّل معنى الشعار «جودة تنسج المستقبل». ومحدش من المنافسين عامل حاجة زيها.',
+      dur:'حوالي ٤ ثواني', els:'خيوط مرسومة بالكود بألوان الهوية، اللوجو، الاسم بالإنجليزي، عداد', ref:'فكرة أصلية مأخوذة من طريقة النسج (over / under)', dev:'متوسط — Canvas 2D، خفيف ومن غير صور', total:4000, run:weave },
+    { title:'٠٥ — مروحة العينات',
+      desc:'٧ كروت عينات متثبتة في مسمار زي الكتالوج، بتتفرد زي المروحة وبعدين تتقفل. الانتقال: الكارت اللي فوق عليه صورة من فيديو الـ Hero نفسه، فبيكبر لحد ما يملا الشاشة ويبقى هو الـ Hero، والفيديو يكمل من نفس اللقطة.',
+      why:'مأخوذة من حاجة حقيقية في شغلهم: مروحة العينات اللي في صورة swatch-fan. أي حد شغال في المفروشات والتنجيد هيعرفها على طول، وبتعرض أنواع الأقمشة كلها في ثانيتين.',
+      dur:'حوالي ٤ ثواني', els:'٧ صور من صور الكلاينت، الرمز صغير على كل كارت، اللوجو، عداد', ref:'مروحة العينات في صور الكلاينت نفسها', dev:'متوسط — CSS transforms أو GSAP', total:4000, run:swatchFan },
+    { title:'٠٦ — لفّة القماش',
+      desc:'شاشة التحميل معمولة زي قماشة عاجي حواليها غرزة الحافة، وعليها اللوجو والعداد. الانتقال: النور بيزيد على القماشة كأنها اتعرّضت لضوء كاميرا، وبتختفي في الوهج، والـ Hero بيظهر من النور ويتظبط تدريجيًا زي صورة بتتحمض.',
+      why:'حركة واحدة بس قوية ومفهومة، وطالعة من المصنع: لف الأتواب. خفيفة جدًا ومن غير صور، فمش هتأخر السايت، وشكلها فخم ومختلف عن الـ loaders المعتادة.',
+      dur:'حوالي ٣٫٦ ثانية', els:'اللوجو، الاسم بالإنجليزي، غرزة الحافة، عداد، لفّة', ref:'فكرة أصلية — لف أتواب القماش', dev:'سهل — clip-path + عنصر واحد بيتحرك', total:3600, run:roll },
+    { title:'٠٧ — الخيط + الفيديو',
+      desc:'خيط طوبي بيترسم على الشاشة، واللوجو والاسم بيظهروا. بعدها الشاشة بتتفتح من عند الخيط ويظهر فيديو القماش الفاتح مالي الشاشة. الانتقال: القماش الفاتح بيتشال بنعومة من تحت لفوق بحافة مغبّشة، والـ Hero بيطلع لمكانه من ورا.',
+      why:'كونترست واضح: الـ Loading فاتح (عاجي وقماش كريمي)، والـ Hero غامق ودرامي. والانتقال طالع من الخيط نفسه، فالقصة متكاملة: خيط ← خياطة ← قماش ← الموقع.',
+      dur:'حوالي ٥٫٥ ثانية', els:'خيط SVG، غرزة، إبرة، اللوجو، الاسم بالإنجليزي، عداد، فيديو drape-closeup، فيديو الـ Hero', ref:'الخيط (03) + فتح الشاشة من النص', dev:'متوسط — SVG stroke + GSAP، والفيديوهين MP4 مضغوطين (حوالي ٢ ميجا لكل واحد)', total:5500, run:threadVideo },
+    { title:'٠٨ — انتقال ناعم',
+      desc:'الـ Loading هو فيديو القماش الفاتح مالي الشاشة، وعليه اللوجو والعداد. لما العداد يوصل 100، الكاميرا بتقرّب على القماش لحد ما يبقى غبشة ناعمة ويغمق شوية شوية، وفي نفس اللحظة الـ Hero بيظهر من ورا من غبشة وهو قريب، ويبعد ويوضح لحد ما يستقر. فالفيديوهين بيبانوا كأنهم لقطة واحدة بتكمل بعضها: من القماش الفاتح عن قرب لقماش طاير في الضلمة. وبعدها اسم البراند بيظهر.',
+      why:'مفيش قطع ولا حركة حادة. الانتقال بيحسس إنك دخلت جوه القماش وطلعت على عالم البراند، وده بيدّي إحساس فخم وسينمائي زي إعلانات الماركات الكبيرة. والكونترست بين الفاتح والغامق هو اللي بيعمل اللحظة.',
+      dur:'حوالي ٥ ثواني', els:'فيديو drape-closeup، اللوجو، عداد، خط تقدم، فيديو الـ Hero', ref:'أسلوب الـ Match cut / Push-through في الأفلام والإعلانات', dev:'سهل — CSS أو GSAP: scale + blur + opacity على الفيديوهين في نفس الوقت', total:5000, run:unweave },
+    { title:'٠٩ — مسحة الحرير',
+      desc:'الـ Loading هو فيديو القماش الفاتح وعليه اللوجو والعداد. لما العداد يوصل 100، اللوجو اللي في النص بيصغر ويطير بنعومة لحد ما يقعد في مكانه في الهيدر فوق، كأنه نفس اللوجو اتنقل من صفحة لصفحة. وفي نفس الوقت القماش الفاتح بينسحب من الشمال لليمين بحافة ناعمة مغبّشة، زي قماشة حرير بتتسحب من على حاجة، والـ Hero بيظهر من تحتها وهو بيتحرك بالراحة عكس اتجاهها وبيوضح.',
+      why:'فيه حاجتين بيخلوه مميز: اللوجو نفسه هو اللي بيربط الصفحتين، فالعين بتمشي وراه ومش بتحس بأي قطع. والمسحة الناعمة بتحسس بملمس القماش وهو بيتسحب. وده مختلف عن 08 اللي بيدخل في العمق، هنا الحركة بالعرض.',
+      dur:'حوالي ٥ ثواني', els:'فيديو drape-closeup، اللوجو (بيطير للهيدر)، عداد، فيديو الـ Hero', ref:'Shared-element transition (زي انتقالات Apple) + soft mask wipe', dev:'متوسط — GSAP Flip للوجو + mask-image متحرك', total:5000, run:diamondPortal }
+  ];
+
+  const stage = document.getElementById('stage');
+  const layer = document.getElementById('layer');
+  const tabs = [...document.querySelectorAll('.tab')];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current = 0, anims = [], timers = [], raf = 0, speed = 1;
+
+  function A(el, kf, opt){ const a = el.animate(kf, Object.assign({fill:'both', easing:'cubic-bezier(.7,0,.2,1)'}, opt, {duration:(opt.duration||600)*speed, delay:(opt.delay||0)*speed})); anims.push(a); return a; }
+  function T(fn, ms){ timers.push(setTimeout(fn, ms*speed)); }
+  function counter(el, from, to, start, dur){
+    const t0 = performance.now() + start*speed;
+    const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+    raf = requestAnimationFrame(function tick(now){
+      const p = Math.min(1, Math.max(0,(now - t0)/(dur*speed)));
+      el.firstChild.nodeValue = String(Math.round(from + (to-from)*ease(p))).padStart(3,'0');
+      if(p<1) raf = requestAnimationFrame(tick);
+    });
+  }
+  function reset(){ anims.forEach(a=>a.cancel()); anims=[]; timers.forEach(clearTimeout); timers=[]; cancelAnimationFrame(raf); layer.innerHTML=''; const hv=document.getElementById('heroVid'); if(hv){ try{hv.play();}catch(e){} } }
+  function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; }
+
+  /* ---- 1. Loom ---- */
+  /* ---- shared smooth hand-off helpers ---- */
+  const EZ=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  function settle(at, from, dur, copyDelay, noRestart){
+    const heroEl=stage.querySelector('.hero'), body=heroEl.querySelector('.hero-body'), copy=heroEl.querySelector('.hero-copy'), hv=document.getElementById('heroVid');
+    if(!noRestart){ try{hv.pause(); hv.currentTime=0;}catch(e){} T(()=>{ try{hv.currentTime=0; hv.play();}catch(e){} }, Math.max(0,at-250)); }
+    A(body,[from,{transform:'none',filter:'blur(0px) brightness(1)'}],{duration:dur||2000,delay:at,easing:'cubic-bezier(.16,.7,.2,1)'});
+    [...copy.children].forEach((k,i)=>A(k,[{opacity:0,filter:'blur(10px)',transform:'translateY(14px)'},{opacity:1,filter:'blur(0)',transform:'none'}],{duration:1100,delay:at+(copyDelay||1100)+i*240,easing:'cubic-bezier(.2,.7,.2,1)'}));
+  }
+  function maskAnim(node, at, D, fn){
+    T(()=>{ const t0=performance.now(), d=D*speed;
+      (function step(now){ if(!node.isConnected) return; const p=Math.min(1,(now-t0)/d), m=fn(EZ(p));
+        node.style.webkitMaskImage=m; node.style.maskImage=m; if(p<1) requestAnimationFrame(step); else node.style.visibility='hidden'; })(t0);
+    }, at);
+  }
+
+  function loom(){
+    const top = el('<div class="curtain t"></div>'), bot = el('<div class="curtain b"></div>');
+    const c = el(`<div class="center">${EMBLEM}<img class="loom-logo" src="logo.svg" alt=""><div class="wordmark">OMRAA AL QOMASH</div></div>`);
+    const cnt = el('<div class="counter">000<small>%</small></div>');
+    const bar = el('<div class="bar"><i></i></div>');
+    const grp = el('<div style="position:absolute;inset:0"></div>'); grp.append(top,bot,c,cnt,bar); layer.appendChild(grp);
+    const em = c.querySelector('.emblem'), logo = c.querySelector('.loom-logo'), tag = c.querySelector('.wordmark');
+    logo.style.display='none';
+    [...em.querySelectorAll('path')].forEach(p=>{
+      const o = +p.dataset.o;
+      A(p,[{opacity:0, transform:'scale(.2) rotate(-45deg)'},{opacity:1, transform:'scale(1) rotate(0)'}],{duration:520, delay:200+o*170, easing:'cubic-bezier(.2,.8,.2,1)'});
+    });
+    // swap emblem for full logo
+    T(()=>{ A(em,[{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(.92)'}],{duration:380}); }, 1700);
+    T(()=>{ em.style.display='none'; logo.style.display='block';
+      A(logo,[{opacity:0, transform:'translateY(12px)'},{opacity:1, transform:'none'}],{duration:700, easing:'cubic-bezier(.2,.8,.2,1)'}); }, 2080);
+    A(tag,[{opacity:0, transform:'translateY(8px)'},{opacity:1, transform:'none'}],{duration:700, delay:2350, easing:'cubic-bezier(.2,.8,.2,1)'});
+    A(bar.firstChild,[{transform:'scaleX(0)'},{transform:'scaleX(1)'}],{duration:2900, delay:100, easing:'cubic-bezier(.65,0,.35,1)'});
+    counter(cnt,0,100,100,2900);
+    // exit: soft iris blooms open from the centre of the logo
+    A(cnt,[{opacity:1},{opacity:0}],{duration:300, delay:3050, fill:'forwards'});
+    A(bar,[{opacity:1},{opacity:0}],{duration:300, delay:3050, fill:'forwards'});
+    A(c,[{opacity:1, transform:'scale(1)'},{opacity:0, transform:'scale(1.35)'}],{duration:900, delay:3150, fill:'forwards', easing:'cubic-bezier(.5,0,.2,1)'});
+    maskAnim(grp, 3150, 1700, p=>{ const r=p*95; return `radial-gradient(circle at 50% 48%, transparent ${r}%, #000 ${r+14}%)`; });
+    settle(3150, {transform:'scale(1.3)', filter:'blur(14px) brightness(1.15)'}, 2100, 1100);
+  }
+
+  /* ---- shared: video loader on light fabric ---- */
+  function videoLoader(opts){
+    const hv=document.getElementById('heroVid'); try{hv.pause(); hv.currentTime=0;}catch(e){}
+    const heroEl=stage.querySelector('.hero');
+    const root=el('<div style="position:absolute;inset:0"></div>');
+    const vwrap=el('<div style="position:absolute;inset:0;overflow:hidden;background:#EAE6DF"><video src="drape-closeup.mp4" poster="drape-closeup-poster.jpg" muted loop playsinline autoplay crossorigin="anonymous" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video><div style="position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 50% 50%,rgba(234,230,223,.82),rgba(234,230,223,.25) 100%)"></div></div>');
+    const c=el('<div class="center"><img class="loom-logo" src="logo.svg" alt=""><div class="wordmark">OMRAA AL QOMASH</div></div>');
+    const cnt=el('<div class="counter">000<small>%</small></div>'); const bar=el('<div class="bar"><i></i></div>');
+    root.append(vwrap,c,cnt,bar); layer.appendChild(root);
+    const v=vwrap.querySelector('video'); try{v.currentTime=0; v.play();}catch(e){}
+    A(vwrap,[{opacity:0},{opacity:1}],{duration:700});
+    A(c.firstChild,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:800,delay:300,easing:'cubic-bezier(.2,.8,.2,1)'});
+    A(c.lastChild,[{opacity:0,letterSpacing:'.6em'},{opacity:1,letterSpacing:'.32em'}],{duration:900,delay:600,easing:'cubic-bezier(.2,.8,.2,1)'});
+    A(bar.firstChild,[{transform:'scaleX(0)'},{transform:'scaleX(1)'}],{duration:2600,delay:100,easing:'cubic-bezier(.65,0,.35,1)'});
+    counter(cnt,0,100,100,2600);
+    A(c.lastChild,[{opacity:1},{opacity:0}],{duration:350,delay:2650,fill:'forwards'});
+    if(!opts||!opts.keepLogo) A(c.firstChild,[{opacity:1},{opacity:0}],{duration:350,delay:2750,fill:'forwards'});
+    A(cnt,[{opacity:1},{opacity:0}],{duration:300,delay:2750,fill:'forwards'}); A(bar,[{opacity:1},{opacity:0}],{duration:300,delay:2750,fill:'forwards'});
+    return {root,vwrap,v,hv,heroEl};
+  }
+  function heroIn(hv,heroEl,at){
+    T(()=>{ try{hv.currentTime=0; hv.play();}catch(e){} }, at-200);
+    const body=heroEl.querySelector('.hero-body'); const copy=heroEl.querySelector('.hero-copy');
+    A(body,[{transform:'scale(1.18)'},{transform:'scale(1)'}],{duration:1800,delay:at,easing:'cubic-bezier(.2,.7,.2,1)'});
+    [...copy.children].forEach((k,i)=>A(k,[{opacity:0,filter:'blur(10px)',transform:'translateY(14px)'},{opacity:1,filter:'blur(0)',transform:'none'}],{duration:1000,delay:at+500+i*250,easing:'cubic-bezier(.2,.7,.2,1)'}));
+  }
+  /* ---- 8. Smooth push-through ---- */
+  function unweave(){
+    const {root,vwrap,v,hv,heroEl}=videoLoader();
+    const at=3000, body=heroEl.querySelector('.hero-body'), copy=heroEl.querySelector('.hero-copy');
+    // hero waits underneath: zoomed in, blurred, dark
+    T(()=>{ try{hv.currentTime=0; hv.play();}catch(e){} }, at-300);
+    A(body,[{transform:'scale(1.45)',filter:'blur(16px) brightness(.6)'},{transform:'scale(1.45)',filter:'blur(16px) brightness(.6)'}],{duration:at,delay:0});
+    // loader pushes in, softens and dissolves
+    A(v,[{transform:'scale(1)',filter:'blur(0) brightness(1)'},{transform:'scale(1.9)',filter:'blur(14px) brightness(.55)'}],{duration:1700,delay:at,fill:'forwards',easing:'cubic-bezier(.55,0,.35,1)'});
+    A(vwrap.lastChild,[{opacity:1},{opacity:0}],{duration:900,delay:at,fill:'forwards'});
+    A(root,[{opacity:1},{opacity:0}],{duration:1100,delay:at+700,fill:'forwards',easing:'cubic-bezier(.4,0,.2,1)'});
+    // hero settles: pulls back and comes into focus
+    A(body,[{transform:'scale(1.45)',filter:'blur(16px) brightness(.6)'},{transform:'scale(1)',filter:'blur(0) brightness(1)'}],{duration:2200,delay:at+500,easing:'cubic-bezier(.16,.7,.2,1)'});
+    [...copy.children].forEach((k,i)=>A(k,[{opacity:0,filter:'blur(10px)',transform:'translateY(14px)'},{opacity:1,filter:'blur(0)',transform:'none'}],{duration:1100,delay:at+1500+i*260,easing:'cubic-bezier(.2,.7,.2,1)'}));
+  }
+
+  /* ---- 9. Silk wipe + logo flight ---- */
+  function diamondPortal(){
+    const {root,vwrap,v,hv,heroEl}=videoLoader({keepLogo:true});
+    const at=3000, body=heroEl.querySelector('.hero-body'), copy=heroEl.querySelector('.hero-copy'), hlogo=heroEl.querySelector('.hero-bar img'), bar=heroEl.querySelector('.hero-bar');
+    T(()=>{ try{hv.currentTime=0; hv.play();}catch(e){} }, at-300);
+    A(hlogo,[{opacity:0},{opacity:0}],{duration:at+1300,fill:'none'});
+    A(bar,[{opacity:0},{opacity:0}],{duration:at+300,fill:'none'});
+    A(bar,[{opacity:0},{opacity:1}],{duration:700,delay:at+300});
+    A(body,[{transform:'translateX(-6%) scale(1.12)',filter:'blur(10px)'},{transform:'translateX(-6%) scale(1.12)',filter:'blur(10px)'}],{duration:at});
+    A(body,[{transform:'translateX(-6%) scale(1.12)',filter:'blur(10px)'},{transform:'none',filter:'blur(0)'}],{duration:2200,delay:at,easing:'cubic-bezier(.22,.7,.2,1)'});
+    // logo flies to header
+    T(()=>{
+      const lg=root.querySelector('.loom-logo'); if(!lg) return;
+      const sr=stage.getBoundingClientRect(), a=lg.getBoundingClientRect(), b=hlogo.getBoundingClientRect();
+      const fly=el('<img src="logo.svg" alt="" style="position:absolute;z-index:5;transform-origin:0 0">');
+      Object.assign(fly.style,{left:(a.left-sr.left)+'px',top:(a.top-sr.top)+'px',width:a.width+'px',height:a.height+'px'});
+      layer.appendChild(fly); lg.style.visibility='hidden';
+      const sc=b.height/a.height, dx=b.left-a.left, dy=b.top-a.top;
+      A(fly,[{transform:'none'},{transform:`translate(${dx}px,${dy}px) scale(${sc})`}],{duration:1300,easing:'cubic-bezier(.65,0,.2,1)',fill:'forwards'});
+      T(()=>fly.remove(),1300);
+    }, at-150);
+    // soft feathered wipe left -> right
+    T(()=>{
+      const t0=performance.now(), D=1800*speed, ez=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+      (function step(now){
+        if(!root.isConnected) return;
+        const p=Math.min(1,(now-t0)/D), x=-25+ez(p)*150;
+        const m=`linear-gradient(100deg, transparent ${x-18}%, #000 ${x+18}%)`;
+        root.style.webkitMaskImage=m; root.style.maskImage=m;
+        v.style.transform=`translateX(${ez(p)*8}%) scale(${1+ez(p)*.08})`;
+        if(p<1) requestAnimationFrame(step); else root.remove();
+      })(t0);
+    }, at);
+    [...copy.children].forEach((k,i)=>A(k,[{opacity:0,filter:'blur(10px)',transform:'translateY(14px)'},{opacity:1,filter:'blur(0)',transform:'none'}],{duration:1100,delay:at+1200+i*260,easing:'cubic-bezier(.2,.7,.2,1)'}));
+  }
+
+  /* ---- 7. Thread + video reveal ---- */
+  function threadVideo(){
+    const group=el('<div style="position:absolute;inset:0"></div>');
+    const vid=el('<div style="position:absolute;inset:0;overflow:hidden;background:#EAE6DF"><video src="drape-closeup.mp4" poster="drape-closeup-poster.jpg" muted loop playsinline autoplay style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.15)"></video></div>');
+    const top=el('<div style="position:absolute;left:0;right:0;top:0;height:50.2%;background:#EAE6DF;overflow:hidden"><div class="cols" style="height:200%"><span></span><span></span><span></span><span></span><span></span></div></div>');
+    const bot=el('<div style="position:absolute;left:0;right:0;bottom:0;height:50.2%;background:#EAE6DF;overflow:hidden"><div class="cols" style="top:-100%;height:200%"><span></span><span></span><span></span><span></span><span></span></div></div>');
+    const svg = el(`<svg class="thread" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true">
+      <path class="stitch" d="M-10 112 C 140 40, 260 170, 400 104 S 640 40, 780 110 S 940 150, 1010 92"/>
+      <path class="main" d="M-10 100 C 140 30, 260 160, 400 94 S 640 30, 780 100 S 940 140, 1010 82"/></svg>`);
+    const c = el('<div class="center"><img class="thread-logo" src="logo.svg" alt=""><div class="wordmark">OMRAA AL QOMASH</div></div>');
+    const needle = el('<div class="needle"></div>');
+    const cnt = el('<div class="counter">000<small>%</small></div>');
+    group.append(vid,top,bot,svg,needle,c,cnt); layer.appendChild(group);
+    const v=vid.querySelector('video'); try{v.currentTime=0; v.play();}catch(e){}
+    const main=svg.querySelector('.main'), st=svg.querySelector('.stitch'); const L=main.getTotalLength();
+    main.style.strokeDasharray=L;
+    A(main,[{strokeDashoffset:L},{strokeDashoffset:0}],{duration:1900, delay:150, easing:'cubic-bezier(.6,0,.3,1)'});
+    A(st,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0 0 0)'}],{duration:1900, delay:400, easing:'cubic-bezier(.6,0,.3,1)'});
+    const t0=performance.now()+150*speed, dur=1900*speed, ez=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    (function mv(now){ if(!needle.isConnected) return; const pp=Math.min(1,Math.max(0,(now-t0)/dur)); const pt=main.getPointAtLength(L*ez(pp)); const sr=svg.getBoundingClientRect(), lr=stage.getBoundingClientRect();
+      needle.style.left=(sr.left-lr.left+pt.x/1000*sr.width)+'px'; needle.style.top=(sr.top-lr.top+pt.y/200*sr.height)+'px';
+      if(pp<1) requestAnimationFrame(mv); else A(needle,[{opacity:1},{opacity:0}],{duration:250}); })(performance.now());
+    A(c.firstChild,[{opacity:0, transform:'translateY(10px)'},{opacity:1, transform:'none'}],{duration:800, delay:1100, easing:'cubic-bezier(.2,.8,.2,1)'});
+    A(c.lastChild,[{opacity:0, letterSpacing:'.6em'},{opacity:1, letterSpacing:'.32em'}],{duration:900, delay:1400, easing:'cubic-bezier(.2,.8,.2,1)'});
+    counter(cnt,0,100,150,2400);
+    A(c,[{opacity:1},{opacity:0}],{duration:350, delay:2650, fill:'forwards'});
+    A(cnt,[{opacity:1},{opacity:0}],{duration:300, delay:2650, fill:'forwards'});
+    A(svg,[{opacity:1},{opacity:0}],{duration:300, delay:2900, fill:'forwards'});
+    // open along the thread: halves part a little, pause, then fully
+    A(top,[{transform:'translateY(0)'},{transform:'translateY(-30%)', offset:.45},{transform:'translateY(-30%)', offset:.6},{transform:'translateY(-101%)'}],{duration:1600, delay:2900, fill:'forwards', easing:'cubic-bezier(.7,0,.2,1)'});
+    A(bot,[{transform:'translateY(0)'},{transform:'translateY(30%)', offset:.45},{transform:'translateY(30%)', offset:.6},{transform:'translateY(101%)'}],{duration:1600, delay:2900, fill:'forwards', easing:'cubic-bezier(.7,0,.2,1)'});
+    A(v,[{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:2600, delay:2900, fill:'forwards', easing:'cubic-bezier(.2,.7,.2,1)'});
+    // the fabric lifts away softly from the bottom, the hero rises into place behind it
+    A(v,[{transform:'scale(1)'},{transform:'scale(1) translateY(-6%)'}],{duration:1700, delay:4600, fill:'forwards', easing:'cubic-bezier(.5,0,.2,1)'});
+    maskAnim(vid, 4600, 1700, p=>{ const y=110-p*140; return `linear-gradient(0deg, transparent ${y-14}%, #000 ${y+14}%)`; });
+    settle(4600, {transform:'translateY(7%) scale(1.06)', filter:'blur(8px) brightness(.85)'}, 2100, 1100);
+  }
+
+  /* ---- 2. Monolith diamond ---- */
+  function monolith(){
+    const hv=document.getElementById('heroVid');
+    const bg = el('<div class="fill"></div>');
+    const logo = el('<img class="mono-logo" src="logo.svg" alt="">');
+    const dia = el('<div class="diamond">'+IMGS.map(s=>`<img src="${s}" alt="">`).join('')+'</div>');
+    const cnt = el('<div class="counter">000<small>%</small></div>');
+    const tag = el('<div class="mono-tag"><span class="wordmark">OMRAA AL QOMASH</span></div>');
+    [bg,dia,logo,cnt,tag].forEach(n=>layer.appendChild(n));
+    const hvClone=el('<video src="hero-fabric.mp4" poster="hero-fabric-poster.jpg" muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0"></video>'); dia.appendChild(hvClone);
+    const imgs=[...dia.querySelectorAll('img')];
+    A(dia,[{opacity:0, transform:'translate(-50%,-50%) scale(.6) rotate(-10deg)'},{opacity:1, transform:'translate(-50%,-50%) scale(1) rotate(0)'}],{duration:800, delay:100, easing:'cubic-bezier(.2,.8,.2,1)'});
+    A(logo,[{opacity:0},{opacity:1}],{duration:600, delay:200});
+    A(tag,[{opacity:0},{opacity:1}],{duration:600, delay:400});
+    const step=300; imgs.forEach((im,i)=>T(()=>{imgs.forEach(x=>x.classList.remove('on')); im.classList.add('on');}, 250+i*step));
+    counter(cnt,0,100,150,2450);
+    // expand: diamond grows to fill the frame, last image = hero image
+    const big='polygon(50% -60%, 160% 50%, 50% 160%, -60% 50%)';
+    T(()=>{
+      const r = stage.getBoundingClientRect(), d = dia.getBoundingClientRect();
+      dia.style.width = r.width+'px'; dia.style.height = r.height+'px'; dia.style.aspectRatio='auto';
+      A(dia,[{clipPath:`polygon(50% ${50-d.height/2/r.height*100}%, ${50+d.width/2/r.width*100}% 50%, 50% ${50+d.height/2/r.height*100}%, ${50-d.width/2/r.width*100}% 50%)`},{clipPath:big}],{duration:1000, easing:'cubic-bezier(.8,0,.15,1)'});
+      A(logo,[{opacity:1},{opacity:0}],{duration:300});
+      A(cnt,[{opacity:1},{opacity:0}],{duration:300});
+      A(tag,[{opacity:1},{opacity:0}],{duration:300});
+    }, 2650);
+    // the last thing inside the diamond is the hero video itself, so the diamond simply becomes the hero
+    T(()=>{ imgs.forEach(x=>x.classList.remove('on')); hvClone.style.opacity=1; try{hvClone.currentTime=0; hvClone.play(); hv.pause(); hv.currentTime=0;}catch(e){} }, 2500);
+    T(()=>{ A(bg,[{opacity:1},{opacity:0}],{duration:500, fill:'forwards'}); try{ hv.currentTime=hvClone.currentTime; hv.play(); }catch(e){}
+      A(dia,[{opacity:1},{opacity:0}],{duration:900, delay:150, fill:'forwards', easing:'ease'}); }, 3650);
+    settle(2650, {transform:'scale(1.06)', filter:'blur(0px) brightness(1)'}, 1800, 1300, true);
+  }
+
+  /* ---- 3. Thread ---- */
+  function thread(){
+    const cols = el('<div class="cols">'+'<span></span>'.repeat(5)+'</div>');
+    const svg = el(`<svg class="thread" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true">
+      <path class="stitch" d="M-10 112 C 140 40, 260 170, 400 104 S 640 40, 780 110 S 940 150, 1010 92"/>
+      <path class="main" d="M-10 100 C 140 30, 260 160, 400 94 S 640 30, 780 100 S 940 140, 1010 82"/></svg>`);
+    const c = el('<div class="center"><img class="thread-logo" src="logo.svg" alt=""><div class="wordmark">OMRAA AL QOMASH</div></div>');
+    const needle = el('<div class="needle"></div>');
+    const cnt = el('<div class="counter">000<small>%</small></div>');
+    const grp = el('<div style="position:absolute;inset:0"></div>'); grp.append(cols,svg,needle,c,cnt); layer.appendChild(grp);
+    const main = svg.querySelector('.main'), st = svg.querySelector('.stitch');
+    const L = main.getTotalLength();
+    main.style.strokeDasharray = L;
+    A(main,[{strokeDashoffset:L},{strokeDashoffset:0}],{duration:1900, delay:150, easing:'cubic-bezier(.6,0,.3,1)'});
+    A(st,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0 0 0)'}],{duration:1900, delay:400, easing:'cubic-bezier(.6,0,.3,1)'});
+    // needle follows path
+    const t0 = performance.now()+150*speed, dur=1900*speed;
+    const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+    (function mv(now){
+      const p = Math.min(1,Math.max(0,(now-t0)/dur));
+      const pt = main.getPointAtLength(L*ease(p));
+      const sr = svg.getBoundingClientRect(), lr = stage.getBoundingClientRect();
+      needle.style.left = (sr.left-lr.left + pt.x/1000*sr.width)+'px';
+      needle.style.top = (sr.top-lr.top + pt.y/200*sr.height)+'px';
+      if(p<1) requestAnimationFrame(mv); else A(needle,[{opacity:1},{opacity:0}],{duration:250});
+    })(performance.now());
+    A(c.firstChild,[{opacity:0, transform:'translateY(10px)'},{opacity:1, transform:'none'}],{duration:800, delay:1100, easing:'cubic-bezier(.2,.8,.2,1)'});
+    A(c.lastChild,[{opacity:0, letterSpacing:'.6em'},{opacity:1, letterSpacing:'.32em'}],{duration:900, delay:1400, easing:'cubic-bezier(.2,.8,.2,1)'});
+    counter(cnt,0,100,150,2300);
+    A(c,[{opacity:1},{opacity:0}],{duration:400, delay:2500, fill:'forwards'});
+    A(cnt,[{opacity:1},{opacity:0}],{duration:300, delay:2500, fill:'forwards'});
+    // the screen opens softly along the thread, like an eye opening
+    A(svg,[{opacity:1},{opacity:0}],{duration:700, delay:2900, fill:'forwards'});
+    maskAnim(grp, 2750, 1800, p=>{ const g=p*62; return `linear-gradient(180deg, #000 ${48-g-10}%, transparent ${48-g+6}%, transparent ${48+g-6}%, #000 ${48+g+10}%)`; });
+    settle(2750, {transform:'scaleY(1.25) scaleX(1.08)', filter:'blur(12px) brightness(.8)'}, 2200, 1200);
+  }
+
+  /* ---- 4. Weave (canvas) ---- */
+  function weave(){
+    const r = stage.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio||1);
+    const W = r.width, H = r.height;
+    const cv = el('<canvas class="weave"></canvas>'); cv.width = W*dpr; cv.height = H*dpr;
+    const plate = el('<div class="plate"><img src="logo.svg" alt=""><div class="wordmark">OMRAA AL QOMASH</div></div>');
+    const cnt = el('<div class="counter">000<small>%</small></div>');
+    layer.append(cv, plate, cnt);
+    const ctx = cv.getContext('2d'); ctx.scale(dpr,dpr);
+    const cols = Math.max(14, Math.round(W/34)), cw = W/cols;
+    const rows = Math.ceil(H/cw), rh = H/rows;
+    const warpC = ['#C7B6A2','#B8A38D','#D3C5B3','#A8937D'];
+    const weftC = ['#9E472A','#361F17','#9E472A','#434B38'];
+    const ez = t => t<0?0:t>1?1:1-Math.pow(1-t,3);
+    const S = speed, t0 = performance.now();
+    plate.style.opacity = 0; A(plate,[{opacity:0, transform:'translate(-50%,-46%)'},{opacity:1, transform:'translate(-50%,-50%)'}],{duration:700, delay:1500, easing:'cubic-bezier(.2,.8,.2,1)'});
+    counter(cnt,0,100,100,3000);
+    A(plate,[{opacity:1},{opacity:0}],{duration:350, delay:3050, fill:'forwards'});
+    A(cnt,[{opacity:1},{opacity:0}],{duration:300, delay:3050, fill:'forwards'});
+    // the woven cloth melts: it softens, swells slightly and dissolves into the hero
+    A(cv,[{opacity:1, filter:'blur(0px) saturate(1)', transform:'scale(1)'},{opacity:.85, filter:'blur(6px) saturate(.7)', transform:'scale(1.04)', offset:.4},{opacity:0, filter:'blur(24px) saturate(.4)', transform:'scale(1.12)'}],{duration:1600, delay:3100, fill:'forwards', easing:'cubic-bezier(.4,0,.2,1)'});
+    settle(3100, {transform:'scale(.92)', filter:'blur(18px) brightness(1.25)'}, 2200, 1100);
+    function band(x,y,w,h,col,vertical){
+      ctx.fillStyle = col; ctx.fillRect(x,y,w,h);
+      const g = vertical ? ctx.createLinearGradient(x,0,x+w,0) : ctx.createLinearGradient(0,y,0,y+h);
+      g.addColorStop(0,'rgba(0,0,0,.16)'); g.addColorStop(.35,'rgba(255,255,255,.10)'); g.addColorStop(1,'rgba(0,0,0,.22)');
+      ctx.fillStyle = g; ctx.fillRect(x,y,w,h);
+    }
+    (function frame(now){
+      if(!cv.isConnected) return;
+      const t = (now - t0)/S;
+      ctx.clearRect(0,0,W,H);
+      // background ivory fades as the weave opens
+      const open = 0;
+      ctx.globalAlpha = 1-open; ctx.fillStyle = '#EAE6DF'; ctx.fillRect(0,0,W,H); ctx.globalAlpha = 1;
+      const thick = 1 - open;            // thread width factor
+      const wW = cw*.86*thick, wH = rh*.86*thick;
+      const warpLen = i => H*ez((t-80-i*28)/700);
+      const weftLen = j => W*ez((t-700-j*70)/900);
+      // warps
+      for(let i=0;i<cols;i++){ const L=warpLen(i); if(L>0 && wW>.3) band(i*cw+(cw-wW)/2, 0, wW, L, warpC[i%4], true); }
+      // wefts with over/under
+      for(let j=0;j<rows;j++){
+        const L = weftLen(j); if(L<=0 || wH<.3) continue;
+        const y = j*rh+(rh-wH)/2;
+        band(0, y, L, wH, weftC[j%4], false);
+        for(let i=0;i<cols;i++){
+          if((i+j)%2) continue;                 // warp on top here
+          const x = i*cw+(cw-wW)/2; if(x > L) break;
+          band(x, y, Math.min(wW, L-x), wH, warpC[i%4], true);
+        }
+      }
+      if(t < 4800) raf = requestAnimationFrame(frame);
+      else ctx.clearRect(0,0,W,H);
+    })(t0);
+  }
+
+  /* ---- 5. Swatch fan ---- */
+  function swatchFan(){
+    const bg = el('<div class="fill"></div>');
+    const logo = el('<img class="fan-logo" src="logo.svg" alt="">');
+    const pics = ['weave-macro.jpg','fabric-rolls.jpg','linen-drape.jpg','swatch-fan.jpg','grey-sofa.jpg','fabric-fan.jpg','hero-fabric-poster.jpg'];
+    const mini = '<svg viewBox="238 264 106 98"><path fill="#9E472A" d="M292.4 325.4 286.5 319.7 283.1 323 288.7 328.7 272.8 344.2 260.1 332.2 269.8 322.3 290.1 302.5 292.5 300.3 310.1 317.6 324.6 331.8 317.9 338.3 311.9 344.1 296.1 328.7 301.6 323.1 298.1 319.8Z"/><path fill="#434B38" d="M292.7 332.1 307.4 346.9 292.3 361.8 277.6 347ZM292.5 265.8 307.1 280.6 292.3 295.2 277.7 280.5ZM328.5 299.8 342.6 314 328.1 328.4 314 314.2ZM256.2 299.8 270.7 314.1 256.5 328.5 242 314.2Z"/></svg>';
+    const fan = el('<div class="fan">'+pics.map(s=>`<div class="card"><div class="ph"><img src="${s}" alt=""></div>${mini}</div>`).join('')+'</div>');
+    const pin = el('<div class="pin"></div>');
+    const cnt = el('<div class="counter">000<small>%</small></div>');
+    layer.append(bg, logo, fan, pin, cnt);
+    const cards = [...fan.children], n = cards.length, spread = 15;
+    A(logo,[{opacity:0},{opacity:1}],{duration:600, delay:100});
+    A(fan,[{transform:'translateY(40%)', opacity:0},{transform:'none', opacity:1}],{duration:700, delay:100, easing:'cubic-bezier(.2,.8,.2,1)'});
+    A(pin,[{opacity:0},{opacity:1}],{duration:400, delay:500});
+    counter(cnt,0,100,100,2600);
+    cards.forEach((c,k)=>{
+      const ang = (k-(n-1)/2)*spread;
+      A(c,[{transform:'rotate(0deg)'},{transform:`rotate(${ang}deg)`, offset:.45},{transform:`rotate(${ang}deg)`, offset:.7},{transform:'rotate(0deg)'}],{duration:2300, delay:650+k*45, easing:'cubic-bezier(.6,0,.25,1)'});
+    });
+    // top card zooms to full frame
+    T(()=>{
+      const top = cards[n-1], sr = stage.getBoundingClientRect(), cr = top.querySelector('.ph').getBoundingClientRect();
+      const z = el('<div class="zoomer"><img src="hero-fabric-poster.jpg" alt=""></div>');
+      Object.assign(z.style,{left:(cr.left-sr.left)+'px',top:(cr.top-sr.top)+'px',width:cr.width+'px',height:cr.height+'px'});
+      layer.appendChild(z);
+      A(logo,[{opacity:1},{opacity:0}],{duration:300}); A(cnt,[{opacity:1},{opacity:0}],{duration:300}); A(pin,[{opacity:1},{opacity:0}],{duration:300});
+      A(z,[{left:z.style.left,top:z.style.top,width:z.style.width,height:z.style.height},{left:'0px',top:'0px',width:sr.width+'px',height:sr.height+'px'}],{duration:950, easing:'cubic-bezier(.8,0,.15,1)'});
+      T(()=>{ fan.style.visibility='hidden'; bg.style.visibility='hidden'; try{hv.currentTime=3; hv.play();}catch(e){} A(z,[{opacity:1},{opacity:0}],{duration:900, fill:'forwards', easing:'ease'}); }, 1000);
+    }, 3050);
+    const hv=document.getElementById('heroVid'); try{hv.pause(); hv.currentTime=3;}catch(e){}
+    settle(4050, {transform:'scale(1.04)', filter:'blur(0px) brightness(1)'}, 1600, 500, true);
+  }
+
+  /* ---- 6. Roll ---- */
+  function roll(){
+    const sheet = el('<div class="sheet"><div class="selvedge"></div><div class="center"><img class="loom-logo" src="logo.svg" alt=""><div class="wordmark">OMRAA AL QOMASH</div></div><div class="counter">000<small>%</small></div></div>');
+    const rl = el('<div class="roll"></div>');
+    layer.append(sheet, rl);
+    const c = sheet.querySelector('.center'), cnt = sheet.querySelector('.counter'), sel = sheet.querySelector('.selvedge');
+    A(sel,[{clipPath:'inset(0 100% 100% 0)'},{clipPath:'inset(0 0 0 0)'}],{duration:1400, delay:100, easing:'cubic-bezier(.6,0,.3,1)'});
+    A(c,[{opacity:0, transform:'translateY(10px)'},{opacity:1, transform:'none'}],{duration:800, delay:350, easing:'cubic-bezier(.2,.8,.2,1)'});
+    counter(cnt,0,100,100,2300);
+    // exit: light floods the cloth like a camera exposure, then the hero develops out of the glow
+    rl.style.display='none';
+    A(c,[{opacity:1, letterSpacing:'0'},{opacity:0}],{duration:500, delay:2500, fill:'forwards'});
+    A(cnt,[{opacity:1},{opacity:0}],{duration:300, delay:2500, fill:'forwards'});
+    A(sel,[{opacity:1, transform:'scale(1)'},{opacity:0, transform:'scale(1.06)'}],{duration:900, delay:2500, fill:'forwards', easing:'cubic-bezier(.4,0,.2,1)'});
+    A(sheet,[{opacity:1, filter:'brightness(1) blur(0px)'},{opacity:1, filter:'brightness(1.18) blur(2px)', offset:.35},{opacity:0, filter:'brightness(1.35) blur(10px)'}],{duration:1500, delay:2700, fill:'forwards', easing:'cubic-bezier(.4,0,.2,1)'});
+    settle(2900, {transform:'scale(1.08)', filter:'blur(8px) brightness(2.2)'}, 2300, 1300);
+  }
+
+  function reduced(){
+    const bg = el('<div class="fill"></div>');
+    const c = el('<div class="center"><img class="loom-logo" src="logo.svg" alt=""><div class="tagline">جودة تنسج المستقبل</div></div>');
+    layer.append(bg,c);
+    A(c,[{opacity:0},{opacity:1}],{duration:400});
+    A(bg,[{opacity:1},{opacity:0}],{duration:400, delay:1400, easing:'ease'});
+    A(c,[{opacity:1},{opacity:0}],{duration:400, delay:1400, easing:'ease'});
+  }
+
+  function show(i){
+    current = i;
+    tabs.forEach((t,k)=>t.setAttribute('aria-selected', k===i ? 'true':'false'));
+    const c = concepts[i];
+    document.getElementById('c-title').textContent = c.title;
+    document.getElementById('c-desc').textContent = c.desc;
+    document.getElementById('c-why').textContent = c.why;
+    document.getElementById('c-dur').textContent = c.dur;
+    document.getElementById('c-els').textContent = c.els;
+    document.getElementById('c-ref').textContent = c.ref;
+    document.getElementById('c-dev').textContent = c.dev;
+    try{ localStorage.setItem('oq-loader2', i); }catch(e){}
+    play();
+  }
+  function play(){ reset(); (reduce ? reduced : concepts[current].run)(); }
+
+  tabs.forEach(t=>t.addEventListener('click',()=>show(+t.dataset.c)));
+  document.getElementById('replay').addEventListener('click', play);
+  const slow = document.getElementById('slow');
+  slow.addEventListener('click',()=>{ speed = speed===1 ? 2.5 : 1; slow.setAttribute('aria-pressed', speed!==1); slow.textContent = speed===1 ? 'بالبطيء' : 'السرعة العادية'; play(); });
+  stage.addEventListener('click', play);
+
+  let start = 8; try{ const s = +localStorage.getItem('oq-loader2'); if(s>=0 && s<concepts.length) start = s; }catch(e){}
+  const go = ()=>show(start);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>setTimeout(go,150)); else setTimeout(go,300);
+})();
+</script>

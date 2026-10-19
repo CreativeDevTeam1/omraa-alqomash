@@ -1,0 +1,94 @@
+:root {
+  /* Brand colours — ONLY the identity-guide colours: 60 ivory+beige / 30 navy+olive+charcoal / 10 terracotta; espresso is the ink */
+  --color-ivory: #eae6df;
+  --color-espresso: #361f17;
+  --color-olive: #434b38;
+  --color-beige: #b8a38d;
+  --color-terracotta: #9e472a;
+  --color-navy: #1b2a3b;
+  --color-charcoal: #2d2f2d;
+  --color-white: #ffffff; /* one of the six approved logo backgrounds */
+
+  --color-bg: var(--color-ivory);
+  --color-text: var(--color-espresso);
+  --color-accent: var(--color-terracotta);
+  --color-line: color-mix(in srgb, var(--color-espresso) 22%, transparent);
+
+  /* Typography — one typeface per language (families live in fonts.css) */
+  --font-body: var(--font-en);
+  --font-display: var(--font-en);
+
+  /* Type scale (fluid, 360px → 1440px viewport) */
+  --text-xs: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --text-sm: clamp(0.9375rem, 0.91rem + 0.12vw, 1rem);
+  --text-base: clamp(1.0625rem, 1.03rem + 0.15vw, 1.1875rem);
+  --text-lg: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
+  --text-xl: clamp(1.625rem, 1.4rem + 1vw, 2.25rem);
+  --text-2xl: clamp(2.125rem, 1.7rem + 1.9vw, 3.5rem);
+  --text-3xl: clamp(2.75rem, 2rem + 3.3vw, 5rem);
+  --text-4xl: clamp(3.5rem, 2.2rem + 5.8vw, 7.5rem);
+  --text-display: clamp(4.5rem, 2rem + 11vw, 12rem);
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-body: 1.65;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.18em;
+
+  /* Spacing scale (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --space-11: 12rem;
+  --section-pad: 88px;
+  --section-space: clamp(var(--space-8), 10vw, var(--space-10));
+
+  /* Layout */
+  --container-max: 1240px;
+  --container-pad: 48px;
+  --header-height: 88px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 200ms;
+  --duration-base: 450ms;
+  --duration-slow: 900ms;
+
+  /* Layers */
+  --z-header: 50;
+  --z-menu: 60;
+  --z-loader: 100;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --section-pad: 136px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --container-pad: 20px;
+    --header-height: 72px;
+  }
+}
+
+/* Arabic: same tokens, Arabic family + looser leading (Arabic needs more line height) */
+:root[lang='ar'] {
+  --font-body: var(--font-ar);
+  --font-display: var(--font-ar);
+  --leading-tight: 1.35;
+  --leading-snug: 1.5;
+  --leading-body: 1.9;
+  --tracking-wide: 0;
+  --tracking-wider: 0;
+}

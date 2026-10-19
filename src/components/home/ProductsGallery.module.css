@@ -1,0 +1,330 @@
+.section {
+  --card-w: clamp(260px, 24vw, 350px);
+  --gap: 48px;
+  --drop: clamp(40px, 8vw, 120px);
+  padding-block: 120px;
+}
+
+@media (min-width: 1024px) {
+  .section {
+    --gap: clamp(100px, 10.4vw, 150px);
+  }
+}
+
+/* ---------- Header: one row ---------- */
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-6);
+  margin-block-end: 40px;
+}
+
+.label {
+  font-size: 21px;
+  line-height: var(--leading-snug);
+  color: var(--color-terracotta);
+}
+
+.listIntro {
+  font-size: 21px;
+  line-height: var(--leading-snug);
+  color: var(--color-charcoal);
+}
+
+/* ---------- Stage: background title + the moving row ---------- */
+
+.stage {
+  position: relative;
+  /* Clip only sideways; never vertically, so shadows and tilted corners show. */
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+/* Automatic carousel: grab / swipe to move it, vertical page scrolling still works on touch. */
+.marquee {
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.dragging {
+  cursor: grabbing;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* The statement, large and clearly visible, behind the cards. It does not move. */
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  padding-inline: 4vw;
+  font-family: var(--font-display);
+  font-size: 8.5vw;
+  font-weight: 300;
+  line-height: 1;
+  text-align: center;
+  text-wrap: balance;
+  color: color-mix(in srgb, var(--color-espresso) 90%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+.viewport {
+  position: relative;
+  z-index: 1; /* cards above the title */
+  padding-block: 96px;
+}
+
+.track {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+  inline-size: max-content;
+}
+
+.marquee .track {
+  will-change: transform;
+}
+
+.item {
+  flex: 0 0 var(--card-w);
+}
+
+.odd {
+  rotate: 5deg;
+}
+
+.even {
+  margin-block-start: var(--drop);
+  rotate: -5deg;
+}
+
+:root[dir='rtl'] .odd {
+  rotate: -5deg;
+}
+
+:root[dir='rtl'] .even {
+  rotate: 5deg;
+}
+
+/* ---------- Card ---------- */
+
+.card {
+  inline-size: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--color-white);
+  box-shadow: 0 24px 48px rgba(54, 31, 23, 0.14);
+  transition: transform 0.45s var(--ease-out);
+}
+
+/* The lift is applied inside the tilted <li>, so it adds to the tilt instead of resetting it. */
+.item:hover .card,
+.item:focus-visible .card {
+  transform: translateY(-6px);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.imageWrap {
+  overflow: hidden;
+  aspect-ratio: 5 / 4;
+  background: var(--color-beige);
+}
+
+.imageWrap picture {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+/* Parallax: ProductsGallery.tsx moves the image ±12px inside its frame (the 1.1 scale hides the edges). */
+.imageWrap img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.1);
+}
+
+.marquee .imageWrap img {
+  will-change: transform;
+}
+
+.text {
+  padding: 22px 24px 28px;
+}
+
+.name {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-espresso);
+}
+
+:root[lang='ar'] .name {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.description {
+  margin-block-start: 10px;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--color-charcoal);
+}
+
+/* ---------- Reduced motion: a native horizontal scroller with snap, no auto-motion ---------- */
+
+.scroller .viewport {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.scroller .viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.scroller .track {
+  padding-inline: var(--container-pad);
+}
+
+.scroller .item {
+  scroll-snap-align: start;
+  scroll-margin-inline: var(--container-pad);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}
+
+/* ---------- Pause / play (WCAG 2.2.2) ---------- */
+
+.controls {
+  display: flex;
+  justify-content: flex-end; /* the inline end: right in English, left in Arabic */
+  margin-block-start: -40px;
+  position: relative;
+  z-index: 2; /* above the row's bottom padding, so it is always clickable */
+}
+
+.pause {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 44px;
+  block-size: 44px;
+  color: var(--color-espresso);
+}
+
+/* ---------- Below the stage: note + actions in one row ---------- */
+
+.after {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+  margin-block-start: 40px;
+}
+
+.note {
+  flex: 1 1 320px;
+  max-inline-size: 620px;
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-olive);
+}
+
+:root[lang='ar'] .note {
+  font-style: normal; /* the Arabic font has no italic; avoid a synthetic slant */
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) 28px;
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  block-size: 52px;
+  padding-inline: 28px;
+  background: var(--color-espresso);
+  color: var(--color-ivory);
+  font-size: 18px;
+  font-weight: 500;
+  transition: background-color 0.3s var(--ease-soft);
+}
+
+.primary:hover {
+  background: var(--color-terracotta);
+}
+
+.textLink {
+  font-size: 18px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  transition: color 0.3s var(--ease-soft);
+}
+
+.textLink:hover {
+  color: var(--color-terracotta);
+}
+
+@media (max-width: 1023px) {
+  .section {
+    padding-block: 88px;
+  }
+
+  .note {
+    flex-basis: 100%;
+  }
+}
+
+/* English display face (Playfair): re-tuned size. */
+:root[lang='en'] .bg {
+  font-size: 7.2vw;
+}
+
+/*
+  Phones: the background title sits above the cards (readable, still behind them in z-order, two lines),
+  and there is no empty height under the row, so the note follows ~40px after the cards.
+*/
+@media (max-width: 767px) {
+  .viewport {
+    padding-block: 136px 0;
+  }
+
+  .bg {
+    place-items: start center;
+    align-content: start;
+    font-size: 8.8vw;
+  }
+
+  :root[lang='en'] .bg {
+    font-size: 9.5vw;
+  }
+
+  .controls {
+    margin-block-start: 0;
+  }
+}

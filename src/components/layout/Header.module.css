@@ -1,0 +1,197 @@
+.header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--z-header);
+  background: var(--color-ivory);
+  border-block-end: 1px solid var(--color-line);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  block-size: var(--header-height);
+}
+
+.logo {
+  display: block;
+  flex-shrink: 0;
+}
+
+.logoImg {
+  block-size: calc(var(--header-height) - 28px);
+  inline-size: auto;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  gap: clamp(var(--space-6), 3.6vw, var(--space-8));
+}
+
+.link {
+  position: relative;
+  display: inline-block;
+  padding-block: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+}
+
+/* No line under the links (active, hover or focus). The current page is exposed through aria-current only;
+   keyboard focus keeps the global :focus-visible ring. */
+
+.switch {
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding-block: var(--space-1);
+}
+
+.switch:hover {
+  border-color: var(--color-espresso);
+}
+
+.toggle {
+  display: none;
+}
+
+/*
+  Desktop (≥ 1024px): logo at the inline start, the three page links truly centred on the page,
+  the language switch at the inline end. The nav overlays the bar with the same 1fr auto 1fr grid
+  (both are as wide as the container), so the links sit at the exact page centre; RTL mirrors itself.
+*/
+@media (min-width: 1024px) {
+  .bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    justify-content: normal;
+  }
+
+  .logo {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    position: relative;
+    z-index: 1;
+  }
+
+  .nav {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    pointer-events: none; /* the empty cells must not cover the logo */
+  }
+
+  .list,
+  .switch {
+    pointer-events: auto;
+  }
+
+  .list {
+    grid-column: 2;
+  }
+
+  .switch {
+    grid-column: 3;
+    justify-self: end;
+  }
+}
+
+/* Mobile / tablet: full-screen menu */
+@media (max-width: 1023px) {
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end; /* the icon stays at the inline end */
+    position: relative;
+    z-index: calc(var(--z-menu) + 1);
+    min-inline-size: 44px;
+    min-block-size: 44px;
+  }
+
+  .burger {
+    position: relative;
+    inline-size: 26px;
+    block-size: 10px;
+  }
+
+  .burger::before,
+  .burger::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    block-size: 1.5px;
+    background: currentColor;
+    transition:
+      transform var(--duration-base) var(--ease-out),
+      inset-block-start var(--duration-base) var(--ease-out);
+  }
+
+  .burger::before {
+    inset-block-start: 0;
+  }
+
+  .burger::after {
+    inset-block-start: 8px;
+  }
+
+  .toggle[aria-expanded='true'] .burger::before {
+    inset-block-start: 4px;
+    transform: rotate(45deg);
+  }
+
+  .toggle[aria-expanded='true'] .burger::after {
+    inset-block-start: 4px;
+    transform: rotate(-45deg);
+  }
+
+  .nav {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-menu);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-7);
+    padding: calc(var(--header-height) + var(--space-5)) var(--container-pad) var(--space-7);
+    background: var(--color-ivory);
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      visibility 0s linear var(--duration-base);
+  }
+
+  .navOpen {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+  }
+
+  .list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .list .link {
+    font-size: var(--text-xl);
+    font-weight: 400;
+  }
+
+  .switch {
+    align-self: flex-start;
+    font-size: var(--text-base);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+}

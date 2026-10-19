@@ -1,0 +1,83 @@
+.section {
+  display: grid;
+  background: var(--color-olive);
+  color: var(--color-ivory);
+}
+
+.image {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--color-beige);
+}
+
+.image picture {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.image img {
+  /* Out of flow: the image fills the column and can never change the row height. */
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.content {
+  display: grid;
+  align-content: center;
+  gap: 32px;
+  padding: 48px var(--container-pad);
+}
+
+.heading {
+  /* 24px counts as large text: beige on olive is 3.7:1, which passes AA for large text only */
+  font-size: 24px;
+  font-weight: 400;
+  line-height: var(--leading-snug);
+  color: var(--color-beige);
+}
+
+.statement {
+  margin-block-start: var(--space-3);
+  font-size: clamp(28px, 2.5vw, 36px);
+  line-height: 1.2;
+}
+
+.text {
+  margin-block-start: var(--space-4);
+  font-size: 18px;
+  line-height: 1.6;
+  opacity: 0.88;
+}
+
+.statement + .text {
+  margin-block-start: var(--space-4);
+}
+
+.divided {
+  padding-block-start: 32px;
+  border-block-start: 1px solid rgba(234, 230, 223, 0.2);
+}
+
+@media (min-width: 1024px) {
+  .section {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* The image column covers the full height of the text column. */
+  .image {
+    aspect-ratio: auto;
+  }
+
+  .content {
+    padding: 64px 72px;
+  }
+}
+
+:root[lang='en'] .statement {
+  font-size: clamp(27px, 2.3vw, 33px);
+}

@@ -1,0 +1,139 @@
+.footer {
+  padding-block: var(--space-9) var(--space-6);
+  background: var(--color-ivory);
+  color: var(--color-espresso);
+  border-block-start: 1px solid var(--color-line);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, 1fr);
+  gap: var(--space-7) var(--space-6);
+}
+
+.logoLink {
+  display: inline-block;
+}
+
+.logo {
+  block-size: 84px;
+  inline-size: auto;
+}
+
+.descriptor {
+  margin-block: var(--space-5) var(--space-4);
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  max-inline-size: 22ch;
+}
+
+.highlights {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  opacity: 0.75;
+}
+
+.colTitle {
+  margin-block-end: var(--space-4);
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+.col ul {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.link {
+  transition: color var(--duration-fast) var(--ease-soft);
+}
+
+/* Phone row: icon first in reading order (left in EN, right in AR), centred with the number. */
+.iconLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+/* Social icons: 22px glyphs on 40×40 tap targets, 20px apart visually; first glyph aligns with the text edge. */
+.col .social {
+  display: flex;
+  gap: 2px;
+  margin-inline-start: -9px;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 40px;
+  block-size: 40px;
+}
+
+.link:hover {
+  color: var(--color-terracotta);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-start: var(--space-8);
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--color-line);
+  font-size: var(--text-xs);
+  opacity: 0.75;
+}
+
+@media (max-width: 1099px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 559px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tap targets below desktop: every footer link, the phone row and the social icons are at least 44px tall.
+   Padding-free: the rows grow evenly (the list gap moves into the row height), the type does not change. */
+@media (max-width: 1023px) {
+  .col ul {
+    gap: 0;
+  }
+
+  .col > ul > li {
+    display: flex;
+    align-items: center;
+    min-block-size: 44px;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+  }
+
+  .col .social {
+    margin-inline-start: -11px;
+  }
+
+  .socialLink {
+    inline-size: 44px;
+    block-size: 44px;
+  }
+}

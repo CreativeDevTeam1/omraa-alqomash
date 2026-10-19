@@ -1,0 +1,182 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  block-size: 860px; /* reserved: no layout shift */
+  /* The client's video has a light grey studio backdrop (edge colour about #D3CDC8): the closest brand colour. */
+  background: var(--color-ivory);
+  color: var(--color-espresso);
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+}
+
+.video {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.content {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 58%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: var(--container-pad);
+  text-align: center;
+}
+
+/*
+  The video is light, so the text is espresso. Where the dark fabric passes behind it, a very soft ivory glow
+  (a feathered radial gradient, never a box) keeps the text at WCAG AA.
+*/
+.content {
+  isolation: isolate;
+}
+
+.content::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-inline: -14%;
+  inset-block: -70%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse closest-side,
+    rgba(234, 230, 223, 0.89) 0%,
+    rgba(234, 230, 223, 0.82) 50%,
+    rgba(234, 230, 223, 0) 100%
+  );
+}
+
+.title {
+  color: var(--color-espresso);
+}
+
+.titleEn {
+  font-weight: 300;
+  font-size: clamp(40px, 7.4vw, 112px);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.titleAr {
+  font-family: var(--font-ar-display);
+  font-weight: 700;
+  font-size: clamp(48px, 8.9vw, 128px);
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+/* Words stay whole; letters/words animate individually. */
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.unit {
+  display: inline-block;
+  opacity: 0; /* revealed by the intro (or by the reduced-motion rule below) */
+}
+
+.rule {
+  display: block;
+  inline-size: 72px;
+  block-size: 1px;
+  margin-block: 26px;
+  background: var(--color-espresso);
+  transform: scaleX(0);
+}
+
+.line {
+  color: var(--color-espresso);
+  opacity: 0;
+}
+
+.line {
+  text-wrap: balance; /* no single-word last line */
+}
+
+.lineEn {
+  font-size: clamp(16px, 1.7vw, 24px);
+  letter-spacing: 0.04em;
+}
+
+.lineAr {
+  font-family: var(--font-ar-display);
+  font-weight: 700;
+  font-size: clamp(20px, 2.1vw, 30px);
+}
+
+@media (max-width: 767px) {
+  .hero {
+    block-size: 640px;
+  }
+
+  /*
+    Phones: the video (16:9) fills the tall frame by height. The fabric's centre is at about 48% / 56% of the frame
+    (measured over the whole loop), so it is zoomed around that point and lifted by the 6% it sits below the middle:
+    the fabric then centres on the hero, right behind the title. The poster (same element) gets the same framing.
+  */
+  .video {
+    object-position: 48% 56%;
+    transform-origin: 48% 56%;
+    scale: 1.3;
+    translate: 0 -6%;
+  }
+
+  /* The title block is centred in the hero, so text and fabric centre together. */
+  .content {
+    inset-block-start: 50%;
+  }
+}
+
+@media (max-width: 719px) {
+  .titleEn {
+    white-space: normal;
+  }
+}
+
+/* Reduced motion: final state, no animation (the video is replaced by the poster in Hero.tsx). */
+@media (prefers-reduced-motion: reduce) {
+  .media {
+    will-change: auto;
+  }
+
+  .unit {
+    opacity: 1;
+  }
+
+  .rule {
+    transform: none;
+  }
+
+  .line {
+    opacity: 0.85;
+  }
+}
+
+/* English display face (Playfair Display) is wider/taller than Cormorant: sizes re-tuned, same box. */
+:root[lang='en'] .titleEn {
+  font-size: clamp(32px, 7vw, 106px);
+  letter-spacing: 0.04em;
+}
+
+/* Playfair is wider than Cormorant at the same size: keep the title on one line on phones too. */
+@media (max-width: 719px) {
+  :root[lang='en'] .titleEn {
+    font-size: clamp(30px, 8.5vw, 61px);
+    white-space: nowrap;
+  }
+}
+
+:root[lang='en'] .lineEn {
+  font-family: var(--font-en-display);
+  font-size: clamp(14px, 1.4vw, 20px);
+  letter-spacing: 0.03em;
+}

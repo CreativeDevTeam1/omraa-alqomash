@@ -1,0 +1,15 @@
+<!doctype html><meta charset="utf-8"><title>Transparent video test</title>
+<style>
+body{margin:0;font:15px system-ui;background:#EAE6DF;color:#361F17}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.cell{position:relative;aspect-ratio:16/9}
+.cell span{position:absolute;left:12px;top:10px;z-index:2;background:#fff8;padding:2px 8px;border-radius:4px}
+video{width:100%;height:100%;object-fit:cover;display:block}
+.chk{background:repeating-conic-gradient(#ccc 0 25%,#fff 0 50%) 0 0/24px 24px}
+</style>
+<p style="padding:12px 16px;margin:0">Same transparent video on different backgrounds (open in Chrome or Edge):</p>
+<div class="row">
+<div class="cell chk"><span>checker = transparent</span><video src="hero-fabric-alpha.webm" autoplay muted loop playsinline></video></div>
+<div class="cell" style="background:#EAE6DF"><span>Ivory</span><video src="hero-fabric-alpha.webm" autoplay muted loop playsinline></video></div>
+<div class="cell" style="background:#434B38"><span>Olive</span><video src="hero-fabric-alpha.webm" autoplay muted loop playsinline></video></div>
+</div>

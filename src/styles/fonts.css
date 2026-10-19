@@ -1,0 +1,140 @@
+/*
+  Self-hosted fonts (woff2, font-display: swap), in src/assets/fonts so the build hashes the file names.
+    EN  Cormorant Garamond — one variable Latin file (weights 300–500 used) + Latin italic 400
+    EN  Playfair Display 400 + italic 400 (@fontsource/playfair-display 5.3.0, OFL) — display role only, files in public/fonts/playfair/
+    AR  Amiri 400 / 700 — Arabic + Latin subsets. TEMPORARY stand-in for the identity font "Anaqa VF".
+
+  To switch the Arabic font, see "Swapping the Arabic font" in README.md: add @font-face rules for
+  Anaqa VF below and change ONLY --font-ar.
+*/
+
+/* ---------- Cormorant Garamond (Latin) ---------- */
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 300 500;
+  font-display: swap;
+  src: url('../assets/fonts/cormorant-garamond-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/cormorant-garamond-latin-400-italic.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------- Playfair Display (Latin display role: headings, slogans, statements; OFL) ---------- */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/playfair/PlayfairDisplay-400.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/playfair/PlayfairDisplay-400-italic.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------- Anaqa (Arabic identity font, client-supplied) ----------
+   Two static files exist in the supplied set: Regular (400). Bold (700) is declared by vite.config.ts
+   only when public/fonts/anaqa/Anaqa-Bold.woff2 exists. Anaqa has Arabic glyphs only (no Latin digits). */
+@font-face {
+  font-family: 'Anaqa';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/anaqa/Anaqa-Regular.woff2') format('woff2');
+  unicode-range:
+    U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E, U+00A0, U+00AB, U+00BB, U+0600-06FF,
+    U+0750-077F, U+08A0-08FF, U+200C-200F, U+2010-2011, U+2018-201D, U+2026, U+FB50-FDFF,
+    U+FE70-FEFC;
+}
+
+/* ---------- Amiri: Latin digits and letters inside Arabic text only (Anaqa has none) ---------- */
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/amiri-latin-400.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/amiri-latin-700.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------- Fallbacks: system fonts resized to the web fonts' metrics (no layout shift on swap) ---------- */
+@font-face {
+  font-family: 'Cormorant Fallback';
+  src: local('Georgia');
+  size-adjust: 91%;
+  ascent-override: 92%;
+  descent-override: 28%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Playfair Fallback';
+  src: local('Georgia');
+  size-adjust: 100%;
+  ascent-override: 108%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Amiri Fallback';
+  src: local('Tahoma'), local('Arial');
+  size-adjust: 104%;
+}
+
+:root {
+  --font-en: 'Cormorant Garamond', 'Cormorant Fallback', Georgia, 'Times New Roman', serif;
+  /* English roles mirror the Arabic ones: display = headings/slogans/statements, text = everything else. */
+  --font-en-text: var(--font-en);
+  --font-en-display: 'Playfair Display', 'Playfair Fallback', Georgia, 'Times New Roman', serif;
+  /*
+    Arabic stack: Anaqa (the identity font) for everything; Amiri only supplies the Latin digits and
+    letters Anaqa lacks (phone numbers, ISO 9001, English words), then system fonts.
+  */
+  --font-ar: 'Anaqa', 'Amiri', 'Amiri Fallback', 'Noto Naskh Arabic', 'Geeza Pro', serif;
+
+  /*
+    Identity guide roles, mapped to the files that exist (no faux weights anywhere):
+    DISPLAY (guide: Anaqa Bold) = headings, slogans, statements, Products background title → Anaqa 700
+    LIGHT   (guide: Anaqa Thin) = subheadings, labels, h3/h4, product cards → no Thin file was supplied,
+            so Anaqa 400 (the lightest real weight).
+    Until Anaqa-Bold.woff2 is added, display also renders in Anaqa 400 (font-synthesis is off).
+  */
+  --font-ar-display: var(--font-ar);
+  --font-ar-light: var(--font-ar);
+}

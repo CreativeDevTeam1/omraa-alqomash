@@ -1,0 +1,102 @@
+/* ---------- Story: sticky image + three paragraphs ---------- */
+
+.story {
+  padding-block: 72px;
+}
+
+.grid {
+  display: grid;
+  align-items: start;
+  gap: var(--space-6);
+}
+
+.figure {
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--color-beige);
+}
+
+.figure picture {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.figure img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.copy {
+  display: grid;
+  gap: 28px;
+  max-inline-size: 60ch;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--color-charcoal);
+}
+
+@media (min-width: 1024px) {
+  .story {
+    padding-block: 88px;
+  }
+
+  .grid {
+    grid-template-columns: 5fr 7fr;
+    gap: 96px;
+  }
+
+  /* Stays in view while the text scrolls, and releases at the end of the section. */
+  .figure {
+    position: sticky;
+    inset-block-start: calc(var(--header-height) + 40px);
+    aspect-ratio: 4 / 5;
+  }
+
+  .copy {
+    align-self: center;
+  }
+}
+
+/* ---------- Partnership band (olive) ---------- */
+
+.quoteBand {
+  padding-block: 64px;
+  background: var(--color-olive);
+  color: var(--color-ivory);
+  text-align: center;
+}
+
+.quoteIntro {
+  max-inline-size: 760px;
+  margin-inline: auto;
+  font-size: 21px;
+  line-height: 1.65;
+  opacity: 0.82;
+}
+
+.quote {
+  max-inline-size: 1000px;
+  margin: 40px auto 0;
+  font-size: clamp(36px, 4.4vw, 64px);
+  font-style: italic;
+  line-height: 1.12;
+}
+
+:root[lang='ar'] .quote {
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+  .quoteBand {
+    padding-block: 64px;
+  }
+}
+
+:root[lang='en'] .quote {
+  font-size: clamp(31px, 3.9vw, 56px);
+  line-height: 1.2;
+}

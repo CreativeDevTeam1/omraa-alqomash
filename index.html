@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OMRAA AL QOMASH</title>
+    <meta name="description" content="Egyptian Upholstery &amp; Furnishing Fabric Manufacturer" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <meta property="og:title" content="OMRAA AL QOMASH" />
+    <meta property="og:image" content="__OG_IMAGE__" />
+    <meta property="og:url" content="https://omraa-alqomash.vercel.app/en" />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://omraa-alqomash.vercel.app/en" />
+    <link rel="alternate" hreflang="en" href="https://omraa-alqomash.vercel.app/en" />
+    <link rel="alternate" hreflang="ar" href="https://omraa-alqomash.vercel.app/ar" />
+    <link rel="alternate" hreflang="x-default" href="https://omraa-alqomash.vercel.app/en" />
+
+    <!-- Hero weight only; the other Cormorant/Amiri files load on demand. -->
+    <link
+      rel="preload"
+      href="/src/assets/fonts/cormorant-garamond-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Before first paint: Arabic direction; on Home also the loading-screen decision (mirrors
+         src/lib/loaderState.ts) and a preload of the poster that is about to be shown. -->
+    <script>
+      try {
+        // Arabic pages: set lang/dir before first paint so the layout never flips after load.
+        if (/^\/ar(?:\/|$)/.test(location.pathname)) {
+          document.documentElement.lang = 'ar'
+          document.documentElement.dir = 'rtl'
+        }
+        var MEDIA = __MEDIA_MAP__
+        var isHome = /^\/(?:(?:en|ar)\/?)?$/.test(location.pathname)
+        if (isHome) {
+          var first =
+            !sessionStorage.getItem('omraa-loader-seen') &&
+            !matchMedia('(prefers-reduced-motion: reduce)').matches
+          if (first) document.documentElement.classList.add('loader-on')
+          var preload = function (name, high) {
+            var l = document.createElement('link')
+            l.rel = 'preload'
+            l.as = 'image'
+            l.href = MEDIA[name + '.webp']
+            if (high) l.setAttribute('fetchpriority', 'high')
+            document.head.appendChild(l)
+          }
+          if (first) preload('drape-closeup-poster', true)
+          preload('hero-fabric-poster', !first)
+        }
+      } catch (e) {}
+    </script>
+    <style>
+      /* Ivory cover until React mounts the loader (which then adds .loader-mounted). */
+      html.loader-on:not(.loader-mounted) body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: #eae6df;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

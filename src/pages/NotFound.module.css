@@ -1,0 +1,4 @@
+/* English display face (Playfair Display) is wider than Cormorant: the 404 heading is scaled to match. */
+.titleEn {
+  font-size: calc(var(--text-3xl) * 0.82);
+}

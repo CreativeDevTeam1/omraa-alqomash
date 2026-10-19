@@ -1,0 +1,34 @@
+.quality {
+  padding-block: 56px;
+  background: var(--color-espresso);
+  color: var(--color-ivory);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5) var(--space-7);
+}
+
+.iso {
+  font-family: var(--font-en);
+  font-size: clamp(72px, 9vw, 136px);
+  font-weight: 300;
+  line-height: 0.9;
+  color: var(--color-beige);
+  white-space: nowrap;
+}
+
+.text {
+  max-inline-size: 520px;
+  font-size: 22px;
+  line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+  .quality {
+    padding-block: 48px;
+  }
+}

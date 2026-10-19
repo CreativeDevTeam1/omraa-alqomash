@@ -1,0 +1,8 @@
+dist
+_source
+node_modules
+public
+package-lock.json
+npm-install.log
+CLAUDE.md
+PHASE-1-PROMPT.md

@@ -1,0 +1,442 @@
+{
+  "generatedAt": "2026-10-19T12:39:44.955Z",
+  "content": {
+    "en": {
+      "products": {
+        "items": [
+          {
+            "id": "5aekdPSUiwbZLIA4IEkvfw",
+            "slug": "lycra",
+            "name": "Lycra",
+            "description": "Flexible and versatile upholstery fabric suitable for a variety of furnishing applications.",
+            "image": {
+              "assetId": "image-eb1e9bd9a0ff2102c645b3e3ee76d7996a3942d3-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "5aekdPSUiwbZLIA4IEkweq",
+            "slug": "velvet",
+            "name": "Velvet",
+            "description": "A rich and luxurious fabric that adds depth, softness, and an elegant appearance to upholstered furniture.",
+            "image": {
+              "assetId": "image-4b64a140a398e9463b4e7f14b26e0e440efb43dc-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9io1",
+            "slug": "double-chenille",
+            "name": "Double Chenille",
+            "description": "A textured upholstery fabric offering a distinctive visual appearance and comfortable feel.",
+            "image": {
+              "assetId": "image-c560ce5a64be86bc2d8c433389fdd8c6e2c16c41-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U4N7",
+            "slug": "ribbed-satin",
+            "name": "Ribbed Satin",
+            "description": "A refined fabric option featuring a distinctive ribbed surface and elegant appearance.",
+            "image": {
+              "assetId": "image-4c50f3ee31bed3460ca959eb0941cc491bd79822-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "5aekdPSUiwbZLIA4IEkyV2",
+            "slug": "flat-satin",
+            "name": "Flat Satin",
+            "description": "A smooth and sophisticated fabric suitable for modern upholstery and furnishing applications.",
+            "image": {
+              "assetId": "image-de48f2cd3342a30c1d87d8c9f43b769fdb767751-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "5aekdPSUiwbZLIA4IEkyvg",
+            "slug": "satin-fenkh",
+            "name": "Satin Fenkh",
+            "description": "A distinctive satin-based upholstery fabric offering an elegant decorative finish.",
+            "image": {
+              "assetId": "image-fcea640b6628bc229273c24603098a2b0ae14146-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U5XP",
+            "slug": "chicken-puffer",
+            "name": "Chicken Puffer",
+            "description": "A textured upholstery fabric characterized by its distinctive surface and visual depth.",
+            "image": {
+              "assetId": "image-157285b105c41640e135ac50e97cac88a3d73dca-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U6EF",
+            "slug": "gobelin",
+            "name": "Gobelin",
+            "description": "A decorative woven-style fabric suitable for furniture and furnishing applications where pattern and visual character are important.",
+            "image": {
+              "assetId": "image-6bd49402be38fd6309b641cd6ff40b4c86b5e9c0-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U75n",
+            "slug": "mad-arabi",
+            "name": "Mad Arabi",
+            "description": "An upholstery fabric option designed for furnishing and furniture applications.",
+            "image": {
+              "assetId": "image-6d01c41ed30390b1cfc36cf1fe61e3a4e7b23605-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9kAf",
+            "slug": "sunrise",
+            "name": "Sunrise",
+            "description": "A versatile upholstery fabric available for a range of furnishing applications.",
+            "image": {
+              "assetId": "image-5e86d973eea6ec03283d86e0ee6bc98044d9f9dd-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          }
+        ]
+      },
+      "manufacture": {
+        "items": [
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9kZn",
+            "slug": "sofas-chairs",
+            "title": "Sofas & Chairs",
+            "description": "Fabric solutions for residential and commercial seating.",
+            "image": {
+              "assetId": "image-e55a6fca5272114820f5470d2f5e5beab9196641-1200x800-jpg",
+              "crop": null,
+              "height": 800,
+              "hotspot": null,
+              "width": 1200
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9kyv",
+            "slug": "beds-headboards",
+            "title": "Beds & Headboards",
+            "description": "Upholstery fabrics for beds, headboards, and bedroom furniture.",
+            "image": {
+              "assetId": "image-392cff545b1bbfd06e8f0a1ac25df9a290a839a8-1024x1024-jpg",
+              "crop": null,
+              "height": 1024,
+              "hotspot": null,
+              "width": 1024
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9lC9",
+            "slug": "furniture-upholstery",
+            "title": "Furniture Upholstery",
+            "description": "Materials suitable for furniture manufacturers and upholstery businesses.",
+            "image": {
+              "assetId": "image-f2935d5754cea46f2a38fa2c98aef70c2926dfd5-2752x1536-jpg",
+              "crop": null,
+              "height": 1536,
+              "hotspot": null,
+              "width": 2752
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U8zb",
+            "slug": "residential-projects",
+            "title": "Residential Projects",
+            "description": "Fabric solutions for homes, villas, apartments, and residential furnishing projects.",
+            "image": {
+              "assetId": "image-3db623e65135d97d91a6ac514094f005cc4761cc-1100x1100-jpg",
+              "crop": null,
+              "height": 1100,
+              "hotspot": null,
+              "width": 1100
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9lTL",
+            "slug": "commercial-projects",
+            "title": "Commercial Projects",
+            "description": "Supporting furniture and furnishing requirements for offices, retail spaces, and commercial environments.",
+            "image": {
+              "assetId": "image-c708a889611788dfcc72c6bf458a8de68a59a1f2-1920x1797-jpg",
+              "crop": null,
+              "height": 1797,
+              "hotspot": null,
+              "width": 1920
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152UA9t",
+            "slug": "hospitality-interior-projects",
+            "title": "Hospitality & Interior Projects",
+            "description": "Fabric solutions for hotels, restaurants, hospitality spaces, interior projects, and other high-use environments.",
+            "image": {
+              "assetId": "image-7aeaeb487e0e38d7df711f6b6766fda24c717c5e-1000x1000-jpg",
+              "crop": null,
+              "height": 1000,
+              "hotspot": null,
+              "width": 1000
+            }
+          }
+        ]
+      }
+    },
+    "ar": {
+      "products": {
+        "items": [
+          {
+            "id": "5aekdPSUiwbZLIA4IEkvfw",
+            "slug": "lycra",
+            "name": "ليكرا",
+            "description": "قماش مرن ومتعدد الاستخدامات، مناسب لمجموعة متنوعة من تطبيقات التنجيد والمفروشات.",
+            "image": {
+              "assetId": "image-eb1e9bd9a0ff2102c645b3e3ee76d7996a3942d3-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "5aekdPSUiwbZLIA4IEkweq",
+            "slug": "velvet",
+            "name": "قطيفة",
+            "description": "قماش فاخر يمنح الأثاث مظهرًا أنيقًا وملمسًا ناعمًا، ويضيف عمقًا وجاذبية إلى قطع الأثاث المنجدة.",
+            "image": {
+              "assetId": "image-4b64a140a398e9463b4e7f14b26e0e440efb43dc-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9io1",
+            "slug": "double-chenille",
+            "name": "دبل شانيل",
+            "description": "قماش تنجيد ذو ملمس مميز ومظهر غني، مناسب لمجموعة متنوعة من تطبيقات الأثاث والمفروشات.",
+            "image": {
+              "assetId": "image-c560ce5a64be86bc2d8c433389fdd8c6e2c16c41-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U4N7",
+            "slug": "ribbed-satin",
+            "name": "ستان قصب",
+            "description": "خامة ذات مظهر أنيق وسطح مميز، مناسبة لتطبيقات التنجيد والمفروشات.",
+            "image": {
+              "assetId": "image-4c50f3ee31bed3460ca959eb0941cc491bd79822-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "5aekdPSUiwbZLIA4IEkyV2",
+            "slug": "flat-satin",
+            "name": "ستان فلات",
+            "description": "قماش ناعم وأنيق، مناسب للتطبيقات العصرية في مجال التنجيد والمفروشات.",
+            "image": {
+              "assetId": "image-de48f2cd3342a30c1d87d8c9f43b769fdb767751-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "5aekdPSUiwbZLIA4IEkyvg",
+            "slug": "satin-fenkh",
+            "name": "فنخ ستان",
+            "description": "خامة مميزة ذات طابع أنيق، توفر لمسة جمالية مناسبة لتطبيقات الأثاث والمفروشات.",
+            "image": {
+              "assetId": "image-fcea640b6628bc229273c24603098a2b0ae14146-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U5XP",
+            "slug": "chicken-puffer",
+            "name": "نفخ تشكن",
+            "description": "قماش تنجيد ذو ملمس ومظهر مميز، يضيف عمقًا بصريًا وطابعًا خاصًا إلى قطع الأثاث.",
+            "image": {
+              "assetId": "image-157285b105c41640e135ac50e97cac88a3d73dca-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U6EF",
+            "slug": "gobelin",
+            "name": "جوبلان",
+            "description": "قماش ذو طابع زخرفي مميز، مناسب للأثاث والمفروشات التي تتطلب مظهرًا غنيًا وتفاصيل بصرية واضحة.",
+            "image": {
+              "assetId": "image-6bd49402be38fd6309b641cd6ff40b4c86b5e9c0-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U75n",
+            "slug": "mad-arabi",
+            "name": "مد عربي",
+            "description": "أحد أنواع أقمشة التنجيد المتاحة لدينا، والمخصص لتطبيقات الأثاث والمفروشات.",
+            "image": {
+              "assetId": "image-6d01c41ed30390b1cfc36cf1fe61e3a4e7b23605-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9kAf",
+            "slug": "sunrise",
+            "name": "صنرايز",
+            "description": "خامة متعددة الاستخدامات مناسبة لمجموعة متنوعة من تطبيقات التنجيد والمفروشات.",
+            "image": {
+              "assetId": "image-5e86d973eea6ec03283d86e0ee6bc98044d9f9dd-1254x1254-jpg",
+              "width": 1254,
+              "height": 1254
+            }
+          }
+        ]
+      },
+      "manufacture": {
+        "items": [
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9kZn",
+            "slug": "sofas-chairs",
+            "title": "الأرائك والكراسي",
+            "description": "حلول من الأقمشة المناسبة لتنجيد الأثاث السكني والتجاري.",
+            "image": {
+              "assetId": "image-e55a6fca5272114820f5470d2f5e5beab9196641-1200x800-jpg",
+              "crop": null,
+              "height": 800,
+              "hotspot": null,
+              "width": 1200
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9kyv",
+            "slug": "beds-headboards",
+            "title": "الأسرة واللوحات الخلفية",
+            "description": "أقمشة مناسبة لتنجيد الأسرة والـ Headboards وأثاث غرف النوم.",
+            "image": {
+              "assetId": "image-392cff545b1bbfd06e8f0a1ac25df9a290a839a8-1024x1024-jpg",
+              "crop": null,
+              "height": 1024,
+              "hotspot": null,
+              "width": 1024
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9lC9",
+            "slug": "furniture-upholstery",
+            "title": "تنجيد الأثاث",
+            "description": "حلول من الأقمشة لمصنّعي الأثاث وورش التنجيد.",
+            "image": {
+              "assetId": "image-f2935d5754cea46f2a38fa2c98aef70c2926dfd5-2752x1536-jpg",
+              "crop": null,
+              "height": 1536,
+              "hotspot": null,
+              "width": 2752
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152U8zb",
+            "slug": "residential-projects",
+            "title": "المشروعات السكنية",
+            "description": "أقمشة مناسبة للمنازل، والفلل، والشقق، ومشروعات التأثيث السكني.",
+            "image": {
+              "assetId": "image-3db623e65135d97d91a6ac514094f005cc4761cc-1100x1100-jpg",
+              "crop": null,
+              "height": 1100,
+              "hotspot": null,
+              "width": 1100
+            }
+          },
+          {
+            "id": "rtrYlxPRXkT7KVfTbt9lTL",
+            "slug": "commercial-projects",
+            "title": "المشروعات التجارية",
+            "description": "حلول لتلبية احتياجات الأثاث والمفروشات في المكاتب، والمساحات التجارية، ومنافذ البيع.",
+            "image": {
+              "assetId": "image-c708a889611788dfcc72c6bf458a8de68a59a1f2-1920x1797-jpg",
+              "crop": null,
+              "height": 1797,
+              "hotspot": null,
+              "width": 1920
+            }
+          },
+          {
+            "id": "ICq57I0FHmS79jo152UA9t",
+            "slug": "hospitality-interior-projects",
+            "title": "مشروعات الضيافة والتصميم الداخلي",
+            "description": "أقمشة مناسبة للفنادق، والمطاعم، والمساحات الفندقية، ومشروعات التصميم الداخلي وغيرها من الاستخدامات التي تتطلب جودة واعتمادية.",
+            "image": {
+              "assetId": "image-7aeaeb487e0e38d7df711f6b6766fda24c717c5e-1000x1000-jpg",
+              "crop": null,
+              "height": 1000,
+              "hotspot": null,
+              "width": 1000
+            }
+          }
+        ]
+      }
+    }
+  },
+  "channels": {},
+  "media": {
+    "heroVideo": {
+      "fileUrl": "https://cdn.sanity.io/files/f4el6clm/production/806194439cd14a14400de6baef73683719a833be.mp4",
+      "fileAssetId": "file-806194439cd14a14400de6baef73683719a833be-mp4",
+      "poster": {
+        "assetId": "image-a0ab5310f19b059fcd38bfcf1c659b5b8aad05d2-848x464-jpg",
+        "width": 848,
+        "height": 464
+      }
+    },
+    "loaderVideo": {
+      "fileUrl": "https://cdn.sanity.io/files/f4el6clm/production/31983119e849f56ff848212fea4718ef6ff034d4.mp4",
+      "fileAssetId": "file-31983119e849f56ff848212fea4718ef6ff034d4-mp4",
+      "poster": {
+        "assetId": "image-3191f63af39a906f8b3f62d6b0686adbb95d09e8-848x464-jpg",
+        "width": 848,
+        "height": 464
+      }
+    },
+    "aboutIntro": {
+      "assetId": "image-fe2dfffbb7bba8aacd01fb22dc1fcc0350d19eb2-2000x1334-jpg",
+      "width": 2000,
+      "height": 1334
+    },
+    "aboutStory": {
+      "assetId": "image-22492c5384b359d49aad075847dea4415901299b-1264x848-jpg",
+      "width": 1264,
+      "height": 848
+    },
+    "aboutVision": {
+      "assetId": "image-16a6fd144e4dd268016709e9ffded29ac58b53ca-2000x1324-jpg",
+      "width": 2000,
+      "height": 1324
+    },
+    "contact": {
+      "assetId": "image-69d364da5d87c3e57701aade5b035c7e339b9fc5-1280x749-jpg",
+      "width": 1280,
+      "height": 749
+    }
+  }
+}

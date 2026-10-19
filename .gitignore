@@ -1,0 +1,27 @@
+node_modules/
+dist/
+.vercel/
+npm-install.log
+*.log
+*.local
+
+# Secrets (keep .env.example)
+.env
+.env.*
+!.env.example
+
+# Sanity Studio
+studio/node_modules/
+studio/dist/
+studio/.sanity/
+.sanity/
+
+# OS junk
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Temp screenshots / reports
+lighthouse*.html
+lighthouse*.json
+screenshots-tmp/

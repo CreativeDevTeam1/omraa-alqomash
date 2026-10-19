@@ -1,0 +1,201 @@
+/*
+  Loader 07 "Thread + Video", ported from _source/loader-reference/index.html (units: the reference's
+  container-query width `cqw` is the viewport width here, so `1cqw` = `1vw`).
+*/
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.vid {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-ivory); /* the video's own light backdrop */
+}
+
+.videoEl {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  transform: scale(1.15);
+}
+
+/*
+  The two ivory halves with the faint 5-column lines. Each extends 40px past the centre line, and that
+  overlap fades out (gradient mask), so the opening edges are soft and nothing shows at rest.
+*/
+.half {
+  position: absolute;
+  inset-inline: 0;
+  block-size: calc(50% + 40px);
+  overflow: hidden;
+  background: var(--color-ivory);
+}
+
+.top {
+  inset-block-start: 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 40px), transparent);
+}
+
+.bottom {
+  inset-block-end: 0;
+  -webkit-mask-image: linear-gradient(to top, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(to top, #000 calc(100% - 40px), transparent);
+}
+
+.cols {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.cols span {
+  display: block;
+  background: var(--color-ivory);
+}
+
+.cols span + span {
+  box-shadow: inset 1px 0 0 rgba(54, 31, 23, 0.07);
+}
+
+/* The thread: always laid out left→right in the SVG; Arabic mirrors the whole drawing. */
+.thread {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  inline-size: 100%;
+  block-size: 24vw;
+  transform: translateY(-50%);
+  overflow: visible;
+}
+
+.threadRtl {
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.main {
+  fill: none;
+  stroke: var(--color-terracotta);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+}
+
+.stitch {
+  fill: none;
+  stroke: var(--color-olive);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 6 7;
+}
+
+.needle {
+  position: absolute;
+  inline-size: 10px;
+  block-size: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  box-shadow: 0 0 0 5px rgba(158, 71, 42, 0.15);
+}
+
+.center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2vw;
+}
+
+/* The logo sits on an ivory ground (it fades out as the veil fades in over the video). */
+.logoWrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-inline: 2.4vw;
+}
+
+.logoBg {
+  position: absolute;
+  inset: 0;
+  background: var(--color-ivory);
+}
+
+/* Radial ivory veil, about 2.6x the logo, centred on it: keeps the logo on an approved ground. */
+.veil {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 50%;
+  inline-size: 260%;
+  block-size: 260%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(234, 230, 223, 0.92), rgba(234, 230, 223, 0));
+  pointer-events: none;
+}
+
+.logo {
+  position: relative;
+  block-size: max(56px, 11vw);
+  inline-size: auto;
+}
+
+.wordmark {
+  font-family: var(--font-en-display);
+  font-size: max(10px, 1.05vw);
+  letter-spacing: 0.32em;
+  text-indent: 0.32em; /* balances the trailing tracking so the line stays centred */
+  color: color-mix(in srgb, var(--color-espresso) 72%, transparent);
+  white-space: nowrap;
+}
+
+/* The counter sits at the inline-end corner (right in English, left in Arabic). */
+.counterWrap {
+  position: absolute;
+  inset-inline-end: 3.4vw;
+  inset-block-end: 2.6vw;
+}
+
+.counterText {
+  font-family: var(--font-en);
+  font-size: max(28px, 6.4vw);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--color-espresso);
+  font-variant-numeric: tabular-nums;
+}
+
+.percent {
+  margin-inline-start: 0.2em;
+  font-size: 0.4em;
+  vertical-align: top;
+  color: var(--color-terracotta);
+}
+
+/* Reduced motion on a first visit: the hero fades in over 300ms (an ivory veil fades out). */
+.reducedFade {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  background: var(--color-ivory);
+  pointer-events: none;
+  animation: veilOut 300ms var(--ease-soft) forwards;
+}
+
+@keyframes veilOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
