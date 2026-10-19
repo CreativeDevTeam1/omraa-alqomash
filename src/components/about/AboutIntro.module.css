@@ -63,3 +63,11 @@
     padding-block: 48px 40px;
   }
 }
+
+/* Fix 22: Arabic line-height floor (display >= 1.4, text >= 1.7) */
+:root[lang='ar'] .title {
+  line-height: 1.45;
+}
+:root[lang='ar'] .lead {
+  line-height: 1.7;
+}

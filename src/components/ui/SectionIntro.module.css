@@ -41,3 +41,14 @@
 :root[lang='en'] .statement {
   font-size: clamp(25px, 2.6vw, 36px);
 }
+
+/* Fix 22: Arabic line-height floor (display >= 1.4, text >= 1.7) */
+:root[lang='ar'] .label {
+  line-height: 1.7;
+}
+:root[lang='ar'] .statement {
+  line-height: 1.45;
+}
+:root[lang='ar'] .text {
+  line-height: 1.7;
+}

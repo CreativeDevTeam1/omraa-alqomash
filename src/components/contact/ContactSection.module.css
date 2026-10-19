@@ -165,3 +165,20 @@
 :root[lang='en'] .statement {
   font-size: clamp(33px, 3.6vw, 52px);
 }
+
+/* Fix 22: Arabic line-height floor (display >= 1.4, text >= 1.7) */
+:root[lang='ar'] .label {
+  line-height: 1.7;
+}
+:root[lang='ar'] .intro {
+  line-height: 1.7;
+}
+:root[lang='ar'] .value {
+  line-height: 1.7;
+}
+:root[lang='ar'] .inquiriesText {
+  line-height: 1.7;
+}
+:root[lang='ar'] .statement {
+  line-height: 1.5;
+}

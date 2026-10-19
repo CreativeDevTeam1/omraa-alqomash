@@ -46,3 +46,8 @@
     border-inline-start: 1px solid color-mix(in srgb, var(--color-espresso) 15%, transparent);
   }
 }
+
+/* Fix 22: Arabic line-height floor (display >= 1.4, text >= 1.7) */
+:root[lang='ar'] .item {
+  line-height: 1.7;
+}

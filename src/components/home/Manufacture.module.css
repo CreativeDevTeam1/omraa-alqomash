@@ -59,3 +59,11 @@
   line-height: 1.55;
   color: var(--color-charcoal);
 }
+
+/* Fix 22: Arabic line-height floor (display >= 1.4, text >= 1.7) */
+:root[lang='ar'] .title {
+  line-height: 1.5;
+}
+:root[lang='ar'] .description {
+  line-height: 1.7;
+}

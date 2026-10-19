@@ -100,3 +100,14 @@
   font-size: clamp(31px, 3.9vw, 56px);
   line-height: 1.2;
 }
+
+/* Fix 22: Arabic line-height floor (display >= 1.4, text >= 1.7) */
+:root[lang='ar'] .copy {
+  line-height: 1.7;
+}
+:root[lang='ar'] .quoteIntro {
+  line-height: 1.7;
+}
+:root[lang='ar'] .quote {
+  line-height: 1.5;
+}
