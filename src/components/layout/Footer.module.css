@@ -22,7 +22,7 @@
 
 .descriptor {
   margin-block: var(--space-5) var(--space-4);
-  font-size: var(--text-lg);
+  font-size: clamp(1.5rem, 1.3rem + 0.5vw, 1.75rem);
   line-height: var(--leading-snug);
   max-inline-size: 22ch;
 }
@@ -30,20 +30,20 @@
 .highlights {
   display: grid;
   gap: var(--space-1);
-  font-size: var(--text-sm);
-  opacity: 0.75;
+  font-size: var(--text-base);
+  opacity: 0.85;
 }
 
 .colTitle {
   margin-block-end: var(--space-4);
-  font-size: var(--text-lg);
+  font-size: clamp(1.5rem, 1.3rem + 0.5vw, 1.75rem);
   font-weight: 500;
 }
 
 .col ul {
   display: grid;
   gap: var(--space-2);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   overflow-wrap: anywhere;
 }
 
@@ -89,8 +89,8 @@
   margin-block-start: var(--space-8);
   padding-block-start: var(--space-5);
   border-block-start: 1px solid var(--color-line);
-  font-size: var(--text-xs);
-  opacity: 0.75;
+  font-size: var(--text-sm);
+  opacity: 0.85;
 }
 
 @media (max-width: 1099px) {

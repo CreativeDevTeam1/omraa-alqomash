@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useLayoutEffect, useRef, useSyncExternalStore } from 'react'
 import gsap from 'gsap'
 import { useContent } from '../../i18n/context'
 import { LocalizedLink } from '../../i18n/LocalizedLink'
@@ -32,41 +32,9 @@ const MAX_FLICK = 3000
 /** Card image parallax inside its frame, in px. */
 const PARALLAX = 12
 
-/** Lucide "pause" and "play" (ISC licence), decorative. */
-const Icon = ({ playing }: { playing: boolean }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-    focusable="false"
-  >
-    {playing ? (
-      <>
-        <rect x="14" y="3" width="5" height="18" rx="1" />
-        <rect x="5" y="3" width="5" height="18" rx="1" />
-      </>
-    ) : (
-      <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" />
-    )}
-  </svg>
-)
-
 export function ProductsGallery() {
-  const { products, lang, ui } = useContent()
+  const { products, lang } = useContent()
   const reduced = useSyncExternalStore(subscribeReduced, getReduced)
-  // User pause (WCAG 2.2.2). The engine reads it from a ref.
-  const [userPaused, setUserPaused] = useState(false)
-  const userPausedRef = useRef(false)
-  useEffect(() => {
-    userPausedRef.current = userPaused
-  }, [userPaused])
 
   // Any number of products (3 to 30): the row repeats until it is always wider than the screen plus one set.
   const count = products.items.length
@@ -123,8 +91,7 @@ export function ProductsGallery() {
       boost: 0, // smoothed scroll-velocity contribution, px/s (positive = along the travel direction)
       drag: 0, // inertia velocity from a release, px/s (signed screen direction)
       nudge: 0, // pending keyboard-focus shift, px
-      slow: false, // easing back after a drag (slower than a hover pause)
-      hover: false,
+      slow: false, // easing back after a drag (slower than a focus pause)
       focus: false,
       dragging: false,
       onscreen: false,
@@ -149,7 +116,7 @@ export function ProductsGallery() {
       if (!s.onscreen || document.hidden || setWidth <= 0) return
       const dt = Math.min(deltaMs, 100) / 1000
 
-      const wantPause = s.hover || s.focus || userPausedRef.current || s.dragging
+      const wantPause = s.focus || s.dragging
       if (s.pf > 0.98) s.slow = false
       const tau = s.slow ? RESUME_TAU : PAUSE_TAU
       s.pf += ((wantPause ? 0 : 1) - s.pf) * (1 - Math.exp(-dt / tau))
@@ -210,15 +177,7 @@ export function ProductsGallery() {
       stage.classList.remove(styles.dragging)
     }
 
-    // ---------- Pause on hover / keyboard focus ----------
-    const onOver = (e: PointerEvent) => {
-      if (e.pointerType === 'mouse' && (e.target as Element).closest('li')) s.hover = true
-    }
-    const onOut = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return
-      const to = e.relatedTarget as Element | null
-      if (!to || !to.closest || !to.closest('li')) s.hover = false
-    }
+    // ---------- Pause on keyboard focus ----------
     const onFocusIn = (e: FocusEvent) => {
       s.focus = true
       const li = (e.target as Element).closest('li')
@@ -239,8 +198,6 @@ export function ProductsGallery() {
     stage.addEventListener('pointermove', onMove)
     stage.addEventListener('pointerup', onUp)
     stage.addEventListener('pointercancel', onUp)
-    stage.addEventListener('pointerover', onOver)
-    stage.addEventListener('pointerout', onOut)
     stage.addEventListener('focusin', onFocusIn)
     stage.addEventListener('focusout', onFocusOut)
 
@@ -284,8 +241,6 @@ export function ProductsGallery() {
       stage.removeEventListener('pointermove', onMove)
       stage.removeEventListener('pointerup', onUp)
       stage.removeEventListener('pointercancel', onUp)
-      stage.removeEventListener('pointerover', onOver)
-      stage.removeEventListener('pointerout', onOut)
       stage.removeEventListener('focusin', onFocusIn)
       stage.removeEventListener('focusout', onFocusOut)
       stage.classList.remove(styles.dragging)
@@ -351,19 +306,6 @@ export function ProductsGallery() {
           </ul>
         </div>
       </div>
-
-      {!reduced && (
-        <div className={`container ${styles.controls}`}>
-          <button
-            type="button"
-            className={styles.pause}
-            aria-label={userPaused ? ui.carouselPlay : ui.carouselPause}
-            onClick={() => setUserPaused((p) => !p)}
-          >
-            <Icon playing={!userPaused} />
-          </button>
-        </div>
-      )}
 
       <div className={`container ${styles.after}`}>
         <p className={styles.note}>{products.note}</p>

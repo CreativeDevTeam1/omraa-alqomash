@@ -30,7 +30,7 @@ function anaqaFont(): Plugin {
           : null
       let head = ''
       if (bold) {
-        head += `<style>@font-face{font-family:'Anaqa';font-weight:700;font-style:normal;font-display:swap;src:url('/${dir}/Anaqa-Bold.woff2') format('woff2');unicode-range:U+0020-002F,U+003A-0040,U+005B-0060,U+007B-007E,U+00A0,U+00AB,U+00BB,U+0600-06FF,U+0750-077F,U+08A0-08FF,U+200C-200F,U+2010-2011,U+2018-201D,U+2026,U+FB50-FDFF,U+FE70-FEFC}</style>`
+        head += `<style>@font-face{font-family:'Anaqa';font-weight:700;font-style:normal;font-display:swap;src:url('/${dir}/Anaqa-Bold.woff2') format('woff2');unicode-range:U+0020-002F,U+003A-0040,U+005B-0060,U+007B-007E,U+00A0,U+00AB,U+00BB,U+0600-061E,U+0620-06FF,U+0750-077F,U+08A0-08FF,U+200C-200F,U+2010-2011,U+2018-201D,U+2026,U+FB50-FDFF,U+FE70-FEFC}</style>`
       }
       if (hero) {
         head += `<script>if((location.pathname+'/').indexOf('/ar/')===0){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='anonymous';l.href='/${dir}/${hero}';document.head.appendChild(l)}</script>`

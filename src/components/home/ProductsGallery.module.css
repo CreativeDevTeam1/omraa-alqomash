@@ -120,13 +120,6 @@
   border-radius: 10px;
   background: var(--color-white);
   box-shadow: 0 24px 48px rgba(54, 31, 23, 0.14);
-  transition: transform 0.45s var(--ease-out);
-}
-
-/* The lift is applied inside the tilted <li>, so it adds to the tilt instead of resetting it. */
-.item:hover .card,
-.item:focus-visible .card {
-  transform: translateY(-6px);
 }
 
 .item:focus-visible {
@@ -204,31 +197,6 @@
 .scroller .item {
   scroll-snap-align: start;
   scroll-margin-inline: var(--container-pad);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card {
-    transition: none;
-  }
-}
-
-/* ---------- Pause / play (WCAG 2.2.2) ---------- */
-
-.controls {
-  display: flex;
-  justify-content: flex-end; /* the inline end: right in English, left in Arabic */
-  margin-block-start: -40px;
-  position: relative;
-  z-index: 2; /* above the row's bottom padding, so it is always clickable */
-}
-
-.pause {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 44px;
-  block-size: 44px;
-  color: var(--color-espresso);
 }
 
 /* ---------- Below the stage: note + actions in one row ---------- */
@@ -324,9 +292,6 @@
     font-size: 9.5vw;
   }
 
-  .controls {
-    margin-block-start: 0;
-  }
 }
 
 /* Fix 22: Arabic line-height floor (display >= 1.4, text >= 1.7) */

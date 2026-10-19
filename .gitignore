@@ -25,3 +25,11 @@ desktop.ini
 lighthouse*.html
 lighthouse*.json
 screenshots-tmp/
+
+# Prompt files (never push)
+PHASE-*.md
+FIX-*.md
+CMS-1-*.md
+DEPLOY-*.md
+GITHUB-*.md
+*-PROMPT.md
